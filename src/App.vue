@@ -6,7 +6,8 @@
   </div>
   <GalleryDiv msg="1er test"></GalleryDiv>
   <div class="message">
-    <h2>Ceci est un message</h2>
+    <h2>{{drinkName}}</h2>
+    <img :src="drinkUrl" alt="Cocktail">
     <div class="quoteDiv">
       <QuoteDiv msg="quote"></QuoteDiv>
       <QuoteDiv msg="quote"></QuoteDiv>
@@ -17,14 +18,34 @@
 <script>
 import GalleryDiv from './components/GalleryDiv';
 import QuoteDiv from './components/QuoteDiv';
+import { getRandomCoktail } from './services/api/coktailsAPI'
 
 export default {
   name: 'App',
   components: {
     GalleryDiv,
     QuoteDiv
-  }
+  },
+  data() {
+    return {
+      drinkName: '',
+      drinkUrl: ''
+    };
+  },
+  mounted() {
+    randomCoktail.then(result => {
+      this.drinkName = result.drinks[0].strDrink;
+      this.drinkUrl = result.drinks[0].strDrinkThumb+"/preview";
+    });
+  },
 }
+
+const randomCoktail = getRandomCoktail();
+
+randomCoktail.then(function(result) {
+  console.log(result.drinks[0])
+});
+
 </script>
 
 <style>
