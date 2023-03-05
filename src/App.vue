@@ -1,50 +1,47 @@
 <template>
   <div>
     <h1>
-      Galery
+      Bar simulator 
     </h1>
   </div>
-  <GalleryDiv msg="1er test"></GalleryDiv>
-  <div class="message">
-    <h2>{{drinkName}}</h2>
-    <img :src="drinkUrl" alt="Cocktail">
-    <div class="quoteDiv">
-      <QuoteDiv msg="quote"></QuoteDiv>
-      <QuoteDiv msg="quote"></QuoteDiv>
-    </div>
-  </div>
+  <CompositionSection :drink="drink"></CompositionSection>
+  <IngredientsList :ingredients="ingredients"></IngredientsList>
 </template>
 
 <script>
-import GalleryDiv from './components/GalleryDiv';
-import QuoteDiv from './components/QuoteDiv';
+import CompositionSection from './components/CompositionSection';
+import IngredientsList from './components/IngredientsList';
+
+import { getIngredients } from './services/api/coktailsAPI'
 import { getRandomCoktail } from './services/api/coktailsAPI'
 
 export default {
   name: 'App',
   components: {
-    GalleryDiv,
-    QuoteDiv
+    CompositionSection,
+    IngredientsList
   },
   data() {
     return {
-      drinkName: '',
-      drinkUrl: ''
+      drink: {
+        drinkName:'',
+        drinkUrl:''
+      },
+      ingredients: [],
     };
   },
   mounted() {
-    randomCoktail.then(result => {
-      this.drinkName = result.drinks[0].strDrink;
-      this.drinkUrl = result.drinks[0].strDrinkThumb+"/preview";
+    randomCoktail.then(resultDrink => {
+      this.drink.drinkName = resultDrink.drinks[0].strDrink;
+      this.drink.drinkUrl = resultDrink.drinks[0].strDrinkThumb;
+    });
+    ingredients.then(resultIngredient => {
+      this.ingredients = resultIngredient;
     });
   },
 }
-
 const randomCoktail = getRandomCoktail();
-
-randomCoktail.then(function(result) {
-  console.log(result.drinks[0])
-});
+const ingredients = getIngredients();
 
 </script>
 
@@ -58,21 +55,12 @@ randomCoktail.then(function(result) {
   margin:0;
   padding:0;
 }
-html {
+html, body {
   margin:0;
   padding:0;
+  overflow-x: hidden;
 }
-body{
-  margin:0;
-  padding:0;
-}
-.message{
-  background-color:rgb(255, 196, 196);
-  padding:50px;
-}
-.quoteDiv{
-  display:flex;
-  flex-wrap: wrap;
-  justify-content: center;
+h1{
+  margin:5px;
 }
 </style>
