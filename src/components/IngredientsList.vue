@@ -64,6 +64,9 @@ export default {
     color: white;
     padding: 20px 10px;
     justify-content: space-around;
+
+    min-height: 300px;
+
 }
 
 .orderBar div {

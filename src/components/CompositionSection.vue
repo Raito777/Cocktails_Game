@@ -6,15 +6,16 @@
     </div>
     <div class="coktailInfoDiv">
         <div class="compositionDiv">
-            <IngredientCard @click="removeIngredient(ingredient)" v-for="ingredient in selectedIngredients" :key="ingredient.idIngredient" :name="ingredient.ingredients[0].strIngredient"></IngredientCard>
+            <IngredientCard @click="removeIngredient(ingredient)" v-for="ingredient in selectedIngredients" :key="ingredient.idIngredient" :name="ingredient.ingredients[0].strIngredient" :good="ingredient.good"></IngredientCard>
         </div>
         <div class="resultDiv">
-            <img v-if="guessedDrink" v-bind:src="guessedDrink.strDrinkThumb" v-bind:alt="guessedDrink.strDrink">
+            <span>Missing ingredients : <b>{{nbMissingIngredients}}</b></span>
+            <img v-if="guessedDrink" v-bind:src="guessedDrink.strDrinkThumb" v-bind:alt="guessedDrink.strDrink" :class="[`victory--${victory}`]">
             <img v-else src="../assets/guess.png" alt="Question mark">
             <span>Result :
                 <b v-if="guessedDrink"> {{ guessedDrink.strDrink }} </b>
                 <b v-else> ? </b>
-                <span v-if="guessedDrink">, good job !</span>
+                <span v-if="victory">, good job !</span>
             </span>
             <button @click="nextOrder()">Next</button>
         </div>
@@ -40,6 +41,14 @@ export default {
         },
         guessedDrink: {
             required: true,
+        },
+        victory:{
+            required: true,
+            default: false,
+        },
+        nbMissingIngredients:{
+            required:true,
+            default:0,
         }
     },
     methods: {
@@ -62,7 +71,15 @@ export default {
     border: none;
     ;
 }
+.victory--false{
+    border:3px solid red;
+    transition: 0.2s;
+}
+.victory--true{
+    border:3px solid rgb(0, 255, 0);
+    transition: 0.2s;
 
+}
 .resultDiv span {
     margin-top: 5px;
     margin-bottom: 10px;

@@ -1,6 +1,6 @@
 <template>
     <div :class="['ingredientCard', `card--${size}`, `card--${hidden}`]">
-        <div class="ingredientDivImg">
+        <div :class="['ingredientDivImg', `card--${good}`]">
             <img :src="'https://www.thecocktaildb.com/images/ingredients/'+ name +'-Small.png'">
         </div>
         <span>{{ name }}</span>
@@ -27,6 +27,10 @@
         hidden:{
             type: String,
             default: 'visible'
+        },
+        good:{
+            type: String,
+            default: 'default'
         }
     }
     }
@@ -43,6 +47,17 @@
         width:70px;
         transition:flex-basis 0.2s ease-in-out;
         
+    }
+
+    .card--true{
+        border: 2px solid rgb(0, 255, 0)
+    }
+    .card--false{
+        border: 2px solid rgb(255, 0, 0)
+    }
+    .card--default{
+        border: none;
+
     }
     .card--visible{
         

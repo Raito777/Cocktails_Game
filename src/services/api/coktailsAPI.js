@@ -16,7 +16,25 @@ const getIngredients = async function() {
   }
 }
 
+const getDrinkFromIngredients = async function(ingredient) {
+  const response = await fetch(`https://www.thecocktaildb.com/api/json/v1/1/filter.php?i=${ingredient}`)
+  if(response.status == 200){
+    return response.json()    
+  }else{
+    new Error(response.statusText)
+  }
+}
 
+const getDrinkById = async function(idDrink) {
+  const response = await fetch(`https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${idDrink}`)
+  if(response.status == 200){
+    return response.json()    
+  }else{
+    new Error(response.statusText)
+  }
+}
 
+export { getDrinkById }
+export { getDrinkFromIngredients }
 export { getIngredients }
 export { getRandomCoktail }
