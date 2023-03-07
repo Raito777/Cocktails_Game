@@ -65,6 +65,7 @@ export default {
           break; // match found, exit loop
         }
       }
+      this.onOrderSubmited();
       this.selectedIngredients.splice(index, 1);
 
     }
