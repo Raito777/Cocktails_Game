@@ -3,7 +3,7 @@
     <div class="orderBar">
         <div>
             <span>Boy, a <b>{{randomDrink.strDrink}} !</b></span>
-            <input type="text" v-model="search" placeholder="Search for ingredients">
+            <input type="text" v-model="search" placeholder="Search for ingredients or types">
         </div>
         <img src="../assets/crew0.png">
     </div>
@@ -43,14 +43,17 @@ export default {
             required: true,
         },
         sortedIngredients: {
-            required:true,
+            required: true,
         }
     },
     computed: {
         filteredIngredients() {
+            let defaultMisc = "misc."
             return this.ingredients.filter((ingredient) => {
                 if (ingredient.ingredients[0].strIngredient.toLowerCase().includes(this.search.toLowerCase()) ||
-                    ingredient.ingredients[0].strType != null && ingredient.ingredients[0].strType.toLowerCase().includes(this.search.toLowerCase()) ) {
+                    ingredient.ingredients[0].strType != null && ingredient.ingredients[0].strType.toLowerCase().includes(this.search.toLowerCase())) {
+                    ingredient.hidden = "visible";
+                } else if (ingredient.ingredients[0].strType == null && defaultMisc.includes(this.search.toLowerCase())) {
                     ingredient.hidden = "visible";
                 } else {
                     ingredient.hidden = "hidden";
@@ -69,13 +72,15 @@ export default {
 
 <style scoped>
 .ingredientsDiv {
+    overflow-y: scroll;
     display: flex;
     flex-wrap: wrap;
     background-color: rgb(28, 28, 28);
     color: white;
     padding: 20px 10px;
     justify-content: space-around;
-    min-height: 300px;
+    height:100%;
+    min-height:300px;
 }
 
 .orderBar div {
@@ -90,16 +95,18 @@ export default {
     width: 100%;
     padding: 10px;
     justify-content: space-between;
-    position: relative
+    position: relative;
 }
 
 .orderBar input {
     background-color: rgb(42, 42, 42);
     border: none;
     border-radius: 50px;
-    font-size: 1.1rem;
+    font-size: 1rem;
     padding: 10px 15px;
     color: white;
+    width:55vw;
+    outline:none;
 }
 
 .orderBar span {

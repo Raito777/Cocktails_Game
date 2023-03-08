@@ -2,7 +2,7 @@
 <div class="top-div">
     <div class="infoDiv">
         <span>Order : <b>{{randomDrink.strDrink}}</b></span>
-        <span>Total score : <b>6</b></span>
+        <span>Total score : <b>{{score}}</b></span>
     </div>
     <div class="coktailInfoDiv">
         <div class="compositionDiv">
@@ -20,7 +20,7 @@
             </MissingIngredientCard>
         </div>
         <div class="resultDiv">
-            <span>Missing ingredients : <b>{{missingIngredients.length}}</b></span>
+            <!-- <span>Missing ingredients : <b>{{missingIngredients.length}}</b></span> -->
             <img v-if="guessedDrink" v-bind:src="guessedDrink.strDrinkThumb" v-bind:alt="guessedDrink.strDrink" :class="[`victory--${victory}`]">
             <img v-else src="../assets/guess.png" alt="Question mark">
             <span>Result :
@@ -62,6 +62,10 @@ export default {
         missingIngredients: {
             required: true,
             default: 0,
+        },
+        score:{
+            required:true,
+            default:0
         }
     },
     methods: {
@@ -136,8 +140,8 @@ export default {
     background-color: rgb(28, 28, 28);
     border-color: 1px solid black;
     color: white;
-    height: 400px;
     padding: 20px 10px;
+    height:400px;
 }
 
 .infoDiv {
@@ -146,4 +150,6 @@ export default {
     align-items: flex-start;
     margin-bottom: 10px;
 }
+
+
 </style>

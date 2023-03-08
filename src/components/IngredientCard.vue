@@ -36,7 +36,12 @@ export default {
 }
 </script>
 
+
+
 <style scoped>
+  @import '../assets/styles/style.css';
+
+
 .ingredientCard {
     display: flex;
     flex-direction: column;
@@ -44,7 +49,8 @@ export default {
     margin: 5px;
     width: 70px;
     transition: flex-basis 0.2s ease-in-out;
-
+	-webkit-animation: swing-in-top-fwd 0.5s cubic-bezier(0.175, 0.885, 0.320, 1.275) both;
+    animation: swing-in-top-fwd 0.5s cubic-bezier(0.175, 0.885, 0.320, 1.275) both;
 }
 
 .card--true {
@@ -76,7 +82,6 @@ export default {
     width: 110px;
 
 }
-
 .card--normal {
     width: 70px;
 }
@@ -104,4 +109,5 @@ export default {
     width: 75%;
     height: auto;
 }
+
 </style>

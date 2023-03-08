@@ -12,12 +12,23 @@
     :missingIngredients="missingIngredients"
     :randomDrink="randomDrink"
     :guessedDrink="guessedDrink"
-    :selectedIngredients="selectedIngredients"></CompositionSection>
+    :selectedIngredients="selectedIngredients"
+    :score="score"></CompositionSection>
 <IngredientsList
     :ingredients="ingredients"
     :sortedIngredients="sortedIngredients"
     @ingredient-added="onIngredientAdded"
     :randomDrink="randomDrink"></IngredientsList>
+
+<div
+    id="pagetop"
+    class="fixed right-0 bottom-0"
+    v-show="scY > 300"
+    @click="toTop">
+    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#4a5568" stroke-width="1" stroke-linecap="square" stroke-linejoin="arcs">
+        <path d="M18 15l-6-6-6 6" />
+    </svg>
+</div>
 </template>
 
 <script>
@@ -53,9 +64,12 @@ export default {
             selectedIngredients: [], //tableau des ingrédients sélectionnées
             guessedDrink: '',
             possibleDrinks: [],
-            isClose: '',
-            victory: '',
+            isClose: false,
+            victory: false,
             missingIngredients: '',
+            score: 0,
+            scTimer: 0,
+            scY: 0,
         };
     },
     mounted() {
@@ -70,6 +84,7 @@ export default {
             this.ingredients = resultIngredient;
             this.sortedIngredients = sortIngredientsByType(this.ingredients)
         });
+        window.addEventListener('scroll', this.handleScroll);
     },
     methods: {
         onOrderSubmited() {
@@ -84,8 +99,9 @@ export default {
                 this.guessedDrink = this.randomDrink
 
             }
-            if (checkOrder(this.randomDrink, this.selectedIngredients)) {
+            if (checkOrder(this.randomDrink, this.selectedIngredients) && this.victory == false) {
                 console.log("good job!")
+                this.score += this.selectedIngredients.length
                 this.guessedDrink = this.randomDrink
                 this.isClose = true;
                 this.victory = true;
@@ -94,6 +110,17 @@ export default {
         },
         nextOrder() {
             console.log("next-order")
+            const randomCoktail = getRandomCoktail();
+            randomCoktail.then(resultDrink => {
+                this.randomDrink = resultDrink.drinks[0];
+                console.log(this.randomDrink);
+                getMissingIngredients(this.randomDrink, this.selectedIngredients).then(resultMissing => {
+                    this.missingIngredients = resultMissing
+                });
+                this.victory = false;
+                this.isClose = false;
+                this.selectedIngredients = [];
+            });
         },
         onIngredientAdded(ingredient) {
             if (checkIngredient(this.randomDrink, ingredient)) {
@@ -148,7 +175,21 @@ export default {
                     this.guessedDrink = null;
                 }
             }
-        }
+        },
+        handleScroll: function () {
+            if (this.scTimer) return;
+            this.scTimer = setTimeout(() => {
+                this.scY = window.scrollY;
+                clearTimeout(this.scTimer);
+                this.scTimer = 0;
+            }, 100);
+        },
+        toTop: function () {
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth"
+            });
+        },
     }
 }
 const randomCoktail = getRandomCoktail();
