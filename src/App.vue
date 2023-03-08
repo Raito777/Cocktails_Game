@@ -4,8 +4,19 @@
         Bar simulator
     </h1>
 </div>
-<CompositionSection @ingredient-removed="removeIngedient" @next-order="nextOrder" @order-submited="onOrderSubmited" :victory="victory" :nbMissingIngredients="nbMissingIngredients" :randomDrink="randomDrink" :guessedDrink="guessedDrink" :selectedIngredients="selectedIngredients"></CompositionSection>
-<IngredientsList :ingredients="ingredients" @ingredient-added="onIngredientAdded" :randomDrink="randomDrink"></IngredientsList>
+<CompositionSection
+    @ingredient-removed="removeIngedient"
+    @next-order="nextOrder"
+    @order-submited="onOrderSubmited"
+    :victory="victory"
+    :nbMissingIngredients="nbMissingIngredients"
+    :randomDrink="randomDrink"
+    :guessedDrink="guessedDrink"
+    :selectedIngredients="selectedIngredients"></CompositionSection>
+<IngredientsList
+    :ingredients="ingredients"
+    @ingredient-added="onIngredientAdded"
+    :randomDrink="randomDrink"></IngredientsList>
 </template>
 
 <script>
@@ -43,7 +54,6 @@ export default {
             victory: '',
             nbMissingIngredients: '',
             goodIngredient: '',
-
         };
     },
     mounted() {
@@ -80,10 +90,10 @@ export default {
         onIngredientAdded(ingredient) {
             if (checkIngredient(this.randomDrink, ingredient)) {
                 ingredient.good = true
-            }else{
+            } else {
                 ingredient.good = false
             }
-            console.log("very "+ingredient.good)
+            console.log("very " + ingredient.good)
             this.selectedIngredients.push(ingredient);
             this.onOrderSubmited();
             const possibleDrinks = getDrinkFromIngredients(ingredient.ingredients[0].strIngredient.toLowerCase())

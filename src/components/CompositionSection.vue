@@ -6,7 +6,12 @@
     </div>
     <div class="coktailInfoDiv">
         <div class="compositionDiv">
-            <IngredientCard @click="removeIngredient(ingredient)" v-for="ingredient in selectedIngredients" :key="ingredient.idIngredient" :name="ingredient.ingredients[0].strIngredient" :good="ingredient.good"></IngredientCard>
+            <IngredientCard
+                @click="removeIngredient(ingredient)"
+                v-for="ingredient in selectedIngredients"
+                :key="ingredient.idIngredient"
+                :name="ingredient.ingredients[0].strIngredient"
+                :good="ingredient.good"></IngredientCard>
         </div>
         <div class="resultDiv">
             <span>Missing ingredients : <b>{{nbMissingIngredients}}</b></span>
@@ -42,13 +47,13 @@ export default {
         guessedDrink: {
             required: true,
         },
-        victory:{
+        victory: {
             required: true,
             default: false,
         },
-        nbMissingIngredients:{
-            required:true,
-            default:0,
+        nbMissingIngredients: {
+            required: true,
+            default: 0,
         }
     },
     methods: {
@@ -71,22 +76,25 @@ export default {
     border: none;
     ;
 }
-.victory--false{
-    border:3px solid red;
+
+.victory--false {
+    border: 3px solid red;
     transition: 0.2s;
 }
-.victory--true{
-    border:3px solid rgb(0, 255, 0);
+
+.victory--true {
+    border: 3px solid rgb(0, 255, 0);
     transition: 0.2s;
 
 }
+
 .resultDiv span {
     margin-top: 5px;
     margin-bottom: 10px;
 }
 
 .resultDiv img {
-    width: 70%;
+    width: 125px;
     height: auto;
     transition: 0.2s;
     border-radius: 15px;

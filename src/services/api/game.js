@@ -104,6 +104,8 @@ function checkIngredient(randomDrink, ingredientToCheck){
   }
   return false; // all ingredients matched
 }
+
+
 export { checkIngredient }
 export { calculateMissingIngrediants }
 export { checkPossibleDrink }

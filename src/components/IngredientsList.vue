@@ -8,7 +8,14 @@
         <img src="../assets/crew0.png">
     </div>
     <div class="ingredientsDiv">
-        <IngredientCard size="large" @click="addIngredient(ingredient)" v-for="ingredient in filteredIngredients" :key="ingredient.idIngredient" :name="ingredient.ingredients[0].strIngredient" :hidden="ingredient.hidden"></IngredientCard>
+        <IngredientCard
+            size="large"
+            @click="addIngredient(ingredient)"
+            v-for="ingredient in filteredIngredients"
+            :key="ingredient.idIngredient"
+            :name="ingredient.ingredients[0].strIngredient"
+            :hidden="ingredient.hidden">
+        </IngredientCard>
 
     </div>
 </div>
@@ -64,9 +71,7 @@ export default {
     color: white;
     padding: 20px 10px;
     justify-content: space-around;
-
     min-height: 300px;
-
 }
 
 .orderBar div {
