@@ -1,7 +1,7 @@
 <template>
 <div>
     <h1>
-        Bar simulator
+        Mixology Quest
     </h1>
 </div>
 <CompositionSection

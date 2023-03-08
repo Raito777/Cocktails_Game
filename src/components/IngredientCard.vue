@@ -2,6 +2,7 @@
 <div :class="['ingredientCard', `card--${size}`, `card--${hidden}`]">
     <div :class="['ingredientDivImg', `card--${good}`]">
         <img :src="'https://www.thecocktaildb.com/images/ingredients/'+ name +'-Small.png'">
+        <span>{{ name }}</span>
     </div>
     <span>{{ name }}</span>
 </div>
@@ -80,7 +81,6 @@ export default {
 
 .card--large {
     width: 110px;
-
 }
 .card--normal {
     width: 70px;
@@ -89,20 +89,41 @@ export default {
 .card--large .ingredientDivImg {
     width: 110px;
     height: 110px;
+    position:relative;
 }
 
+.card--large .ingredientDivImg span{
+    display: none;
+}
 .card--normal .ingredientDivImg {
+    margin-top:20px;
     width: 70px;
     height: 70px;
+    display:flex;
+    justify-content: center;
+    align-items: flex-end;
+    position:relative;
 }
-
+.card--normal .ingredientDivImg span{
+    display:block;
+    margin-bottom:5px;
+    font-weight: bold;
+    font-size:0.6rem;
+}
+.card--normal span{
+    display:none;
+}
+.card--normal .ingredientDivImg img{
+    position:absolute;
+    top:-20px;
+    width: 90%;
+}
 .ingredientDivImg {
-
     background-color: rgb(105, 105, 105);
     display: flex;
     justify-content: center;
     align-items: center;
-    border-radius: 15px;
+    border-radius: 10px;
 }
 
 .ingredientDivImg img {
