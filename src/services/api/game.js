@@ -66,25 +66,37 @@ function checkPossibleDrink(possibleDrink, selectedIngredients) {
   return 0
 }
 
-function calculateMissingIngrediants(randomDrink, selectedIngredients){
-    let numIngredient = 1;
-    while (randomDrink[`strIngredient${numIngredient}`] !== null) {
-      numIngredient++;
-    }
-    numIngredient--;
-    let nbMissingIngredients = numIngredient;
-    for (let i = 1; i <= numIngredient; i++) {
-      const ingredient = randomDrink[`strIngredient${i}`];
+import { getIngredientByName } from './coktailsAPI'
 
-      for (let j = 0; j < selectedIngredients.length; j++) {
-        const selIngredient = selectedIngredients[j].ingredients[0].strIngredient;
-        if (ingredient.toLowerCase() == selIngredient.toLowerCase()) {
-          nbMissingIngredients--;
-          break; // match found, exit loop
+async function getMissingIngredients(randomDrink, selectedIngredients){
+  let numIngredient = 1;
+  let missingIngredients = [];
+  while (randomDrink[`strIngredient${numIngredient}`] !== null) {
+    numIngredient++;
+  }
+  numIngredient--;
+  const promises = [];
+  for (let i = 1; i <= numIngredient; i++) {
+    const ingredientName = randomDrink[`strIngredient${i}`];
+    const promise = getIngredientByName(ingredientName)
+      .then(resultIngredient => {
+        let isMissing = true;
+        for (let j = 0; j < selectedIngredients.length; j++) {
+          const selIngredient = selectedIngredients[j].ingredients[0].strIngredient;
+          if (ingredientName.toLowerCase() == selIngredient.toLowerCase()) {
+            isMissing = false;
+            break; // match found, exit loop
+          }
         }
-      }
-    }
-    return nbMissingIngredients; // all ingredients matched
+        if (isMissing) {
+          missingIngredients.push(resultIngredient)
+        }
+      });
+    promises.push(promise);
+  }
+  await Promise.all(promises);
+
+  return missingIngredients; // all ingredients matched
 }
 
 function checkIngredient(randomDrink, ingredientToCheck){
@@ -105,8 +117,22 @@ function checkIngredient(randomDrink, ingredientToCheck){
   return false; // all ingredients matched
 }
 
+function sortIngredientsByType(ingredients) {
+  const sortedIngredients = {};
+  ingredients.forEach((ingredientObj) => {
+    const ingredient = ingredientObj.ingredients[0];
+    if (sortedIngredients[ingredient.strType]) {
+      sortedIngredients[ingredient.strType].push(ingredient);
+    } else {
+      sortedIngredients[ingredient.strType] = [ingredient];
+    }
+  });
+  const sortedArray = Object.values(sortedIngredients);
+  return sortedArray;
+}
 
+export { sortIngredientsByType }
 export { checkIngredient }
-export { calculateMissingIngrediants }
+export { getMissingIngredients }
 export { checkPossibleDrink }
 export { checkOrder }

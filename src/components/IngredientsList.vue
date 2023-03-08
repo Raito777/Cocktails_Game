@@ -41,12 +41,16 @@ export default {
         },
         randomDrink: {
             required: true,
+        },
+        sortedIngredients: {
+            required:true,
         }
     },
     computed: {
         filteredIngredients() {
             return this.ingredients.filter((ingredient) => {
-                if (ingredient.ingredients[0].strIngredient.toLowerCase().includes(this.search.toLowerCase())) {
+                if (ingredient.ingredients[0].strIngredient.toLowerCase().includes(this.search.toLowerCase()) ||
+                    ingredient.ingredients[0].strType != null && ingredient.ingredients[0].strType.toLowerCase().includes(this.search.toLowerCase()) ) {
                     ingredient.hidden = "visible";
                 } else {
                     ingredient.hidden = "hidden";

@@ -34,6 +34,16 @@ const getDrinkById = async function(idDrink) {
   }
 }
 
+const getIngredientByName = async function(ingredientName) {
+  const response = await fetch(`https://www.thecocktaildb.com/api/json/v1/1/search.php?i=${ingredientName}`)
+  if(response.status == 200){
+    return response.json()    
+  }else{
+    new Error(response.statusText)
+  }
+}
+
+export { getIngredientByName }
 export { getDrinkById }
 export { getDrinkFromIngredients }
 export { getIngredients }

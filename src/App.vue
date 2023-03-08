@@ -9,12 +9,13 @@
     @next-order="nextOrder"
     @order-submited="onOrderSubmited"
     :victory="victory"
-    :nbMissingIngredients="nbMissingIngredients"
+    :missingIngredients="missingIngredients"
     :randomDrink="randomDrink"
     :guessedDrink="guessedDrink"
     :selectedIngredients="selectedIngredients"></CompositionSection>
 <IngredientsList
     :ingredients="ingredients"
+    :sortedIngredients="sortedIngredients"
     @ingredient-added="onIngredientAdded"
     :randomDrink="randomDrink"></IngredientsList>
 </template>
@@ -33,8 +34,9 @@ import {
 import {
     checkOrder,
     checkPossibleDrink,
-    calculateMissingIngrediants,
-    checkIngredient
+    getMissingIngredients,
+    checkIngredient,
+    sortIngredientsByType
 } from './services/api/game'
 
 export default {
@@ -46,29 +48,36 @@ export default {
     data() {
         return {
             randomDrink: '',
-            ingredients: [], //tableau des tous les ingrédients
+            ingredients: [],
+            sortedIngredients: [], //tableau des tous les ingrédients
             selectedIngredients: [], //tableau des ingrédients sélectionnées
             guessedDrink: '',
             possibleDrinks: [],
             isClose: '',
             victory: '',
-            nbMissingIngredients: '',
-            goodIngredient: '',
+            missingIngredients: '',
         };
     },
     mounted() {
         randomCoktail.then(resultDrink => {
             this.randomDrink = resultDrink.drinks[0];
             console.log(this.randomDrink);
-            this.nbMissingIngredients = calculateMissingIngrediants(this.randomDrink, this.selectedIngredients);
+            getMissingIngredients(this.randomDrink, this.selectedIngredients).then(resultMissing => {
+                this.missingIngredients = resultMissing
+            });
         });
         ingredients.then(resultIngredient => {
             this.ingredients = resultIngredient;
+            this.sortedIngredients = sortIngredientsByType(this.ingredients)
         });
     },
     methods: {
         onOrderSubmited() {
-            this.nbMissingIngredients = calculateMissingIngrediants(this.randomDrink, this.selectedIngredients);
+
+            getMissingIngredients(this.randomDrink, this.selectedIngredients).then(resultMissing => {
+                this.missingIngredients = resultMissing
+                console.log(this.missingIngredients)
+            });
 
             if (this.randomDrink == this.guessedDrink) {
                 this.isClose = true;
@@ -81,7 +90,6 @@ export default {
                 this.isClose = true;
                 this.victory = true;
             }
-            console.log(this.isClose)
 
         },
         nextOrder() {
@@ -89,11 +97,10 @@ export default {
         },
         onIngredientAdded(ingredient) {
             if (checkIngredient(this.randomDrink, ingredient)) {
-                ingredient.good = true
+                ingredient.good = 'true'
             } else {
-                ingredient.good = false
+                ingredient.good = 'false'
             }
-            console.log("very " + ingredient.good)
             this.selectedIngredients.push(ingredient);
             this.onOrderSubmited();
             const possibleDrinks = getDrinkFromIngredients(ingredient.ingredients[0].strIngredient.toLowerCase())
@@ -112,13 +119,11 @@ export default {
                     break; // match found, exit loop
                 }
             }
-            console.log(this.possibleDrinks);
             this.selectedIngredients.splice(index, 1);
             this.possibleDrinks.splice(index, 1)
             this.isClose = false;
             this.victory = false;
             this.updateGuessedDrink(checkPossibleDrink(this.possibleDrinks, this.selectedIngredients))
-            this.nbMissingIngredients = calculateMissingIngrediants(this.randomDrink, this.selectedIngredients);
             this.onOrderSubmited();
 
         },
@@ -138,7 +143,6 @@ export default {
                     const aPossibleDrink = getDrinkById(idDrink)
                     aPossibleDrink.then(resultDrink => {
                         this.guessedDrink = resultDrink.drinks[0];
-                        console.log(this.guessedDrink)
                     });
                 } else {
                     this.guessedDrink = null;

@@ -12,9 +12,15 @@
                 :key="ingredient.idIngredient"
                 :name="ingredient.ingredients[0].strIngredient"
                 :good="ingredient.good"></IngredientCard>
+            <MissingIngredientCard
+                v-for="missingIngredient in missingIngredients"
+                :key="missingIngredient.idIngredient"
+                :type="missingIngredient.ingredients[0].strType"
+                :name="missingIngredient.ingredients[0].strIngredient">
+            </MissingIngredientCard>
         </div>
         <div class="resultDiv">
-            <span>Missing ingredients : <b>{{nbMissingIngredients}}</b></span>
+            <span>Missing ingredients : <b>{{missingIngredients.length}}</b></span>
             <img v-if="guessedDrink" v-bind:src="guessedDrink.strDrinkThumb" v-bind:alt="guessedDrink.strDrink" :class="[`victory--${victory}`]">
             <img v-else src="../assets/guess.png" alt="Question mark">
             <span>Result :
@@ -30,11 +36,13 @@
 
 <script>
 import IngredientCard from './IngredientCard.vue';
+import MissingIngredientCard from './MissingIngredientCard.vue';
 
 export default {
     name: 'CompositionSection',
     components: {
-        IngredientCard
+        IngredientCard,
+        MissingIngredientCard
     },
     props: {
         msg: String,
@@ -51,7 +59,7 @@ export default {
             required: true,
             default: false,
         },
-        nbMissingIngredients: {
+        missingIngredients: {
             required: true,
             default: 0,
         }
