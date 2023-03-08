@@ -31,11 +31,12 @@ export default {
 .missingCard {
     width: 70px;
     height: 70px;
-    background-color: rgb(105, 105, 105);
+    background-color: #202531;
     display: flex;
     justify-content: center;
     align-items: center;
     border-radius: 10px;
+    border:1px solid #2F323C;
     -webkit-animation: swing-in-top-fwd 0.5s cubic-bezier(0.175, 0.885, 0.320, 1.275) both;
     animation: swing-in-top-fwd 0.5s cubic-bezier(0.175, 0.885, 0.320, 1.275) both;
 }
@@ -49,8 +50,10 @@ export default {
 
 }
 .missingCard span{
-    color: rgb(37, 37, 37);
+    color: #4f5f80;
     font-weight:bold;
+    font-size: 0.8rem;
+
 }
 .name{
     margin-top: 5px;

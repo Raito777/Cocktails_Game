@@ -137,7 +137,7 @@ export default {
 }
 
 .top-div {
-    background-color: rgb(28, 28, 28);
+    background-color: #13161E;
     border-color: 1px solid black;
     color: white;
     padding: 20px 10px;

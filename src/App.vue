@@ -120,6 +120,7 @@ export default {
                 this.victory = false;
                 this.isClose = false;
                 this.selectedIngredients = [];
+                this.guessedDrink = '';
             });
         },
         onIngredientAdded(ingredient) {
@@ -132,7 +133,7 @@ export default {
             this.onOrderSubmited();
             const possibleDrinks = getDrinkFromIngredients(ingredient.ingredients[0].strIngredient.toLowerCase())
             this.addPossibledrink(possibleDrinks)
-
+            this.toTop()
         },
         removeIngedient(ingredient) {
             console.log("removing")

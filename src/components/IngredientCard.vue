@@ -50,16 +50,27 @@ export default {
     margin: 5px;
     width: 70px;
     transition: flex-basis 0.2s ease-in-out;
-	-webkit-animation: swing-in-top-fwd 0.5s cubic-bezier(0.175, 0.885, 0.320, 1.275) both;
-    animation: swing-in-top-fwd 0.5s cubic-bezier(0.175, 0.885, 0.320, 1.275) both;
+	-webkit-animation: swing-in-top-fwd 0.3s cubic-bezier(0.175, 0.885, 0.320, 1.275) both;
+    animation: swing-in-top-fwd 0.3s cubic-bezier(0.175, 0.885, 0.320, 1.275) both;
 }
 
 .card--true {
-    border: 2px solid rgb(0, 255, 0)
+    border: 1px solid #2F323C;
+    background: linear-gradient(#202531, #202531) padding-box,
+              linear-gradient(to bottom, #2F323C, rgb(0, 255, 26)) border-box;
+    border-radius: 50em;
+    border: 1px solid transparent;
+    color :white;
+    color: white;
 }
 
 .card--false {
-    border: 2px solid rgb(255, 0, 0)
+    border: 1px solid #2F323C;
+    background: linear-gradient(#202531, #202531) padding-box,
+              linear-gradient(to bottom, #2F323C, rgb(255, 0, 0)) border-box;
+    border-radius: 50em;
+    border: 1px solid transparent;
+    color :white 
 }
 
 .card--default {
@@ -90,6 +101,8 @@ export default {
     width: 110px;
     height: 110px;
     position:relative;
+    border:1px solid #2F323C;
+
 }
 
 .card--large .ingredientDivImg span{
@@ -117,9 +130,12 @@ export default {
     position:absolute;
     top:-20px;
     width: 90%;
+    filter: drop-shadow(0px 6px 9px #000);
+	-webkit-animation: swing-in-bottom-fwd 0.3s cubic-bezier(0.175, 0.885, 0.320, 1.275) both 0.1s;
+    animation: swing-in-bottom-fwd 0.3s cubic-bezier(0.175, 0.885, 0.320, 1.275) both 0.1s;
 }
 .ingredientDivImg {
-    background-color: rgb(105, 105, 105);
+    background-color:#202531;
     display: flex;
     justify-content: center;
     align-items: center;
