@@ -1,10 +1,9 @@
 <template>
 <div :class="['ingredientCard', `card--${size}`, `card--${hidden}`]">
     <div :class="['ingredientDivImg', `card--${good}`]">
-        <img :src="'https://www.thecocktaildb.com/images/ingredients/'+ name +'-Small.png'">
+        <img :src="'https://www.thecocktaildb.com/images/ingredients/'+ name +'-Medium.png'">
         <span>{{ name }}</span>
     </div>
-    <span>{{ name }}</span>
 </div>
 </template>
 
@@ -97,36 +96,39 @@ export default {
     width: 70px;
 }
 
-.card--large .ingredientDivImg {
-    width: 110px;
-    height: 110px;
+.card--normal .ingredientDivImg {
+    width: 60px;
+    height: 60px;
     position:relative;
-    border:1px solid #2F323C;
+    display:flex;
+    flex-direction: column;
+    padding:5px;
 
 }
 
 .card--large .ingredientDivImg span{
     display: none;
 }
-.card--normal .ingredientDivImg {
+.card--large .ingredientDivImg {
+    border:1px solid #2F323C;
     margin-top:20px;
-    width: 70px;
-    height: 70px;
+    width: 110px;
+    height: 110px;
     display:flex;
     justify-content: center;
     align-items: flex-end;
     position:relative;
 }
-.card--normal .ingredientDivImg span{
+.card--large .ingredientDivImg span{
     display:block;
     margin-bottom:5px;
     font-weight: bold;
     font-size:0.6rem;
 }
-.card--normal span{
+.card--large span{
     display:none;
 }
-.card--normal .ingredientDivImg img{
+.card--large .ingredientDivImg img{
     position:absolute;
     top:-20px;
     width: 90%;
@@ -143,7 +145,7 @@ export default {
 }
 
 .ingredientDivImg img {
-    width: 75%;
+    width: 60%;
     height: auto;
 }
 

@@ -24,9 +24,9 @@
             <img v-if="guessedDrink" v-bind:src="guessedDrink.strDrinkThumb" v-bind:alt="guessedDrink.strDrink" :class="[`victory--${victory}`]">
             <img v-else src="../assets/guess.png" alt="Question mark">
             <span>Result :
-                <b v-if="guessedDrink"> {{ guessedDrink.strDrink }} </b>
-                <b v-else> ? </b>
-                <span v-if="victory">, good job !</span>
+                <b v-if="guessedDrink" class="guessed-drink"> {{ guessedDrink.strDrink }} </b>
+                <b v-else class="guessed-drink"> ? </b>
+                <span v-if="victory" class="guessed-drink">, good job !</span>
             </span>
             <button @click="nextOrder()">Next</button>
         </div>
@@ -80,6 +80,11 @@ export default {
 </script>
 
 <style scoped>
+
+.guessed-drink{
+    -webkit-animation: fade-in 1.2s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+    animation: fade-in 1.2s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+}
 .resultDiv button {
     background: white;
     border-radius: 50px;
@@ -110,6 +115,8 @@ export default {
     height: auto;
     transition: 0.2s;
     border-radius: 15px;
+    -webkit-animation: swing-in-top-fwd 0.3s cubic-bezier(0.175, 0.885, 0.320, 1.275) both 0.3s;
+    animation: swing-in-top-fwd 0.3s cubic-bezier(0.175, 0.885, 0.320, 1.275) both 0.3s;
 }
 
 .resultDiv {

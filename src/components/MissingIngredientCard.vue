@@ -29,8 +29,8 @@ export default {
 
 <style scoped>
 .missingCard {
-    width: 70px;
-    height: 70px;
+    width: 60px;
+    height: 60px;
     background-color: #202531;
     display: flex;
     justify-content: center;
@@ -39,6 +39,7 @@ export default {
     border:1px solid #2F323C;
     -webkit-animation: swing-in-top-fwd 0.5s cubic-bezier(0.175, 0.885, 0.320, 1.275) both;
     animation: swing-in-top-fwd 0.5s cubic-bezier(0.175, 0.885, 0.320, 1.275) both;
+    padding:5px;
 }
 .missingCardDiv {
     display: flex;
