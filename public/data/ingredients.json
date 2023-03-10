@@ -237,7 +237,7 @@
         "idIngredient": "28",
         "strIngredient": "Apple Juice",
         "strDescription": null,
-        "strType": null,
+        "strType": "Juice",
         "strAlcohol": "No",
         "strABV": null
     }]
@@ -255,7 +255,7 @@
         "idIngredient": "30",
         "strIngredient": "Apple",
         "strDescription": null,
-        "strType": null,
+        "strType": "Fruit",
         "strAlcohol": "No",
         "strABV": null
     }]
@@ -291,7 +291,7 @@
         "idIngredient": "34",
         "strIngredient": "Apricot",
         "strDescription": null,
-        "strType": null,
+        "strType": "Fruit",
         "strAlcohol": "No",
         "strABV": null
     }]
@@ -381,7 +381,7 @@
         "idIngredient": "47",
         "strIngredient": "Banana",
         "strDescription": null,
-        "strType": null,
+        "strType": "Fruit",
         "strAlcohol": "No",
         "strABV": null
     }]
@@ -435,7 +435,7 @@
         "idIngredient": "54",
         "strIngredient": "Berries",
         "strDescription": null,
-        "strType": null,
+        "strType": "Fruit",
         "strAlcohol": "No",
         "strABV": null
     }]
@@ -489,7 +489,7 @@
         "idIngredient": "60",
         "strIngredient": "Blackberries",
         "strDescription": null,
-        "strType": null,
+        "strType": "Fruit",
         "strAlcohol": "No",
         "strABV": null
     }]
@@ -570,7 +570,7 @@
         "idIngredient": "69",
         "strIngredient": "Blueberries",
         "strDescription": null,
-        "strType": null,
+        "strType": "Fruit",
         "strAlcohol": "No",
         "strABV": null
     }]
@@ -768,7 +768,7 @@
         "idIngredient": "99",
         "strIngredient": "Cherries",
         "strDescription": null,
-        "strType": null,
+        "strType": "Fruit",
         "strAlcohol": "No",
         "strABV": null
     }]
@@ -831,7 +831,7 @@
         "idIngredient": "106",
         "strIngredient": "Cherry",
         "strDescription": null,
-        "strType": null,
+        "strType": "Fruit",
         "strAlcohol": "No",
         "strABV": null
     }]
@@ -2073,7 +2073,7 @@
         "idIngredient": "286",
         "strIngredient": "Kiwi",
         "strDescription": null,
-        "strType": null,
+        "strType": "Fruit",
         "strAlcohol": "No",
         "strABV": null
     }]
@@ -2136,7 +2136,7 @@
         "idIngredient": "296",
         "strIngredient": "Lemon vodka",
         "strDescription": null,
-        "strType": null,
+        "strType": "Vodka",
         "strAlcohol": "Yes",
         "strABV": null
     }]
@@ -2316,7 +2316,7 @@
         "idIngredient": "319",
         "strIngredient": "Mango",
         "strDescription": null,
-        "strType": null,
+        "strType": "Fruit",
         "strAlcohol": "No",
         "strABV": null
     }]
@@ -2343,7 +2343,7 @@
         "idIngredient": "322",
         "strIngredient": "Maraschino Cherry",
         "strDescription": null,
-        "strType": null,
+        "strType": "Fruit",
         "strAlcohol": "No",
         "strABV": null
     }]
@@ -2928,7 +2928,7 @@
         "idIngredient": "405",
         "strIngredient": "Plums",
         "strDescription": null,
-        "strType": null,
+        "strType": "Fruit",
         "strAlcohol": "No",
         "strABV": null
     }]
@@ -4224,7 +4224,7 @@
         "idIngredient": "577",
         "strIngredient": "Pineapple Syrup",
         "strDescription": "Pineapple syrup is a kind of simple syrup that takes advantage of pineapple's texturizing effect to produce a sweet-and-sour, musky syrup that is not only a classic Tiki ingredient, but also has uses in many early 20th century cocktails. ",
-        "strType": "Fruit Juice",
+        "strType": "Juice",
         "strAlcohol": "No",
         "strABV": null
     }]
@@ -4269,7 +4269,7 @@
         "idIngredient": "602",
         "strIngredient": "Pomegranate juice",
         "strDescription": "Pomegranate juice is made from the fruit of the pomegranate. It is used in cooking both as a fresh juice and as a concentrated syrup.",
-        "strType": "Fruit Juice",
+        "strType": "Juice",
         "strAlcohol": "No",
         "strABV": null
     }]

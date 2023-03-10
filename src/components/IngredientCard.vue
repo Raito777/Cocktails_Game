@@ -85,7 +85,7 @@ export default {
 
 .ingredientCard span {
     margin-top: 5px;
-    font-size: 0.7rem;
+    font-size: 0.6rem;
     width: 100%;
 }
 
