@@ -15,11 +15,50 @@
     :selectedIngredients="selectedIngredients"
     :score="score"></CompositionSection>
 <IngredientsList
-    :ingredients="ingredients"
+    :ingredients="quizzIngredients"
     :sortedIngredients="sortedIngredients"
     @ingredient-added="onIngredientAdded"
-    :randomDrink="randomDrink"></IngredientsList>
+    :randomDrink="randomDrink"
+    :barManSentence="this.barmanPhrase"></IngredientsList>
+<div
+    id="popUpAnimation"
+    class="display-none">
+    <svg width="100%" height="100%" viewBox="0 0 500 500" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
+        <g transform="matrix(0.38084,-0.381137,0.480943,0.481318,-68.3166,266.544)">
+            <path
+                d="M201.792,91.939C201.792,66.862 176.08,46.502 144.411,46.502C112.742,46.502 87.031,66.862 87.031,91.939L87.031,388.01C87.031,413.087 112.742,433.447 144.411,433.447C176.08,433.447 201.792,413.087 201.792,388.01L201.792,91.939Z"
+                style="fill:rgb(0,218,20);" />
+        </g>
+        <g transform="matrix(-0.38084,-0.381137,-0.87866,0.879346,587.31,94.0201)">
+            <path
+                d="M201.792,71.372C201.792,57.646 176.08,46.502 144.411,46.502C112.742,46.502 87.031,57.646 87.031,71.372L87.031,408.576C87.031,422.303 112.742,433.447 144.411,433.447C176.08,433.447 201.792,422.303 201.792,408.576L201.792,71.372Z"
+                style="fill:rgb(0,218,20);" />
+        </g>
+    </svg>
+</div>
+<div
+    id="popWinAnimation"
+    class="display-none">
+    <img id="imgWin" class="display-none" v-bind:src="randomDrink.strDrinkThumb">
 
+    <Vue3Lottie
+        :animationData="fireworksJSON"
+        :loop="false"
+        :speed="1"
+        :autoPlay="false"
+        :height="600"
+        :width="600"
+        ref="fireworks"></Vue3Lottie>
+    <Vue3Lottie
+        :animationData="drinkJSON"
+        :loop="false"
+        :speed="1"
+        :autoPlay="false"
+        :height="400"
+        :width="400"
+        ref="drink" ></Vue3Lottie>
+
+</div>
 <div
     id="pagetop"
     class="fixed right-0 bottom-0"
@@ -35,6 +74,9 @@
 import CompositionSection from './components/CompositionSection';
 import IngredientsList from './components/IngredientsList';
 
+import fireworksJSON from './assets/98352-fireworks-shine.json'
+import drinkJSON from './assets/947-drink.json'
+
 import {
     getRandomCoktail,
     getDrinkFromIngredients,
@@ -47,52 +89,60 @@ import {
     checkPossibleDrink,
     getMissingIngredients,
     checkIngredient,
-    sortIngredientsByType
+    sortIngredientsByType,
+    get4RandomIngredientsFromType
 } from './services/api/game'
+
+import {
+    Vue3Lottie
+} from 'vue3-lottie'
+import 'vue3-lottie/dist/style.css'
 
 export default {
     name: 'App',
     components: {
         CompositionSection,
-        IngredientsList
+        IngredientsList,
+        Vue3Lottie
     },
     data() {
         return {
             randomDrink: '',
-            ingredients: [],
-            sortedIngredients: [], //tableau des tous les ingrédients
-            selectedIngredients: [], //tableau des ingrédients sélectionnées
+            ingredients: [], //tableau des tous les ingrédients
+            sortedIngredients: [],
+            selectedIngredients: [],
+            quizzIngredients: [], //tableau des ingrédients sélectionnées
             guessedDrink: '',
             possibleDrinks: [],
             isClose: false,
             victory: false,
             missingIngredients: '',
+            barmanPhrase: '',
             score: 0,
             scTimer: 0,
             scY: 0,
+            fireworksJSON,
+            drinkJSON
         };
     },
     mounted() {
         randomCoktail.then(resultDrink => {
             this.randomDrink = resultDrink.drinks[0];
             console.log(this.randomDrink);
-            getMissingIngredients(this.randomDrink, this.selectedIngredients).then(resultMissing => {
-                this.missingIngredients = resultMissing
+            this.missingIngredients = getMissingIngredients(this.randomDrink, this.selectedIngredients)
+            ingredients.then(resultIngredient => {
+                this.ingredients = resultIngredient;
+                this.sortedIngredients = sortIngredientsByType(this.ingredients)
+                this.updateQuizzIngredients()
+                this.updateBarmanPhrase(true)
             });
         });
-        ingredients.then(resultIngredient => {
-            this.ingredients = resultIngredient;
-            this.sortedIngredients = sortIngredientsByType(this.ingredients)
-        });
+
         window.addEventListener('scroll', this.handleScroll);
     },
     methods: {
         onOrderSubmited() {
-
-            getMissingIngredients(this.randomDrink, this.selectedIngredients).then(resultMissing => {
-                this.missingIngredients = resultMissing
-                console.log(this.missingIngredients)
-            });
+            this.missingIngredients = getMissingIngredients(this.randomDrink, this.selectedIngredients)
 
             if (this.randomDrink == this.guessedDrink) {
                 this.isClose = true;
@@ -105,8 +155,43 @@ export default {
                 this.guessedDrink = this.randomDrink
                 this.isClose = true;
                 this.victory = true;
+                this.updateBarmanPhrase(true);
+                this.victoryAnimation();
             }
 
+        },
+        updateQuizzIngredients() {
+            console.log("Missing")
+            this.quizzIngredients = get4RandomIngredientsFromType(this.ingredients, this.missingIngredients[0], this.selectedIngredients)
+            const randomIndex = Math.floor(Math.random() * this.quizzIngredients.length);
+            this.quizzIngredients[randomIndex] = this.missingIngredients[0]
+            for (let i = 0; i < this.quizzIngredients.length; i++) {
+                this.quizzIngredients[i].index = i;
+            }
+        },
+        updateBarmanPhrase(good) {
+            const barManSentence = document.getElementById('barManSentence');
+
+            const randomIndex = Math.floor(Math.random() * this.quizzIngredients.length);
+            if (good) {
+                if (this.selectedIngredients.length == 0) {
+                    this.barmanPhrase = startingSentencesFirstIngredient[randomIndex] + '<b>' + this.missingIngredients[0].strType.toLowerCase() + '</b>';
+                } else if (this.missingIngredients.length == 1) {
+                    this.barmanPhrase = startingSentencesLastIngredient[randomIndex] + '<b>' + this.missingIngredients[0].strType.toLowerCase() + '</b>';
+                } else if (this.missingIngredients.length == 0) {
+                    this.barmanPhrase = endingSentence[randomIndex];
+                } else {
+                    this.barmanPhrase = startingSentencesRandomIngredient[randomIndex] + '<b>' + this.missingIngredients[0].strType.toLowerCase() + '</b>';
+                }
+            } else {
+                this.barmanPhrase = badIngredientSentence[randomIndex]
+            }
+            barManSentence.innerHTML = this.barmanPhrase;
+
+            barManSentence.classList.add('animateSentence');
+            setTimeout(() => {
+                barManSentence.classList.remove('animateSentence');
+            }, 700);
         },
         nextOrder() {
             console.log("next-order")
@@ -114,33 +199,48 @@ export default {
             randomCoktail.then(resultDrink => {
                 this.randomDrink = resultDrink.drinks[0];
                 console.log(this.randomDrink);
-                getMissingIngredients(this.randomDrink, this.selectedIngredients).then(resultMissing => {
-                    this.missingIngredients = resultMissing
-                });
+                this.missingIngredients = getMissingIngredients(this.randomDrink, this.selectedIngredients)
                 this.victory = false;
                 this.isClose = false;
                 this.selectedIngredients = [];
                 this.guessedDrink = '';
+                this.updateQuizzIngredients();
+                this.updateBarmanPhrase(true)
+
             });
         },
         onIngredientAdded(ingredient) {
+
+            const popUpDiv = document.getElementById('popUpAnimation');
+
             if (checkIngredient(this.randomDrink, ingredient)) {
                 ingredient.good = 'true'
+                this.selectedIngredients.push(ingredient)
+                const possibleDrinks = getDrinkFromIngredients(ingredient.strIngredient.toLowerCase())
+                this.onOrderSubmited();
+                this.addPossibledrink(possibleDrinks)
+                this.updateQuizzIngredients()
+                this.updateBarmanPhrase(true)
+                popUpDiv.classList.remove('display-none')
+                setTimeout(() => {
+                    popUpDiv.classList.add('display-none');
+                }, 1000);
             } else {
+                const index = this.quizzIngredients.findIndex(ingredientObj => ingredientObj.idIngredient === ingredient.idIngredient);
+                this.quizzIngredients[index].good = false
+
+                console.log(this.quizzIngredients)
                 ingredient.good = 'false'
+                this.updateBarmanPhrase(false)
             }
-            this.selectedIngredients.push(ingredient);
-            this.onOrderSubmited();
-            const possibleDrinks = getDrinkFromIngredients(ingredient.ingredients[0].strIngredient.toLowerCase())
-            this.addPossibledrink(possibleDrinks)
-            this.toTop()
+
         },
         removeIngedient(ingredient) {
             console.log("removing")
             let index = 0;
             for (let j = 0; j < this.selectedIngredients.length; j++) {
-                const selIngredient = this.selectedIngredients[j].ingredients[0].strIngredient;
-                const strIngredient = ingredient.ingredients[0].strIngredient;
+                const selIngredient = this.selectedIngredients[j].strIngredient;
+                const strIngredient = ingredient.strIngredient;
 
                 if (strIngredient.toLowerCase() == selIngredient.toLowerCase()) {
                     index = j
@@ -153,7 +253,6 @@ export default {
             this.victory = false;
             this.updateGuessedDrink(checkPossibleDrink(this.possibleDrinks, this.selectedIngredients))
             this.onOrderSubmited();
-
         },
         addPossibledrink(possibleDrinks) {
             if (!this.isClose) {
@@ -177,6 +276,25 @@ export default {
                 }
             }
         },
+        victoryAnimation() {
+            const victoryPopUp = document.getElementById('popWinAnimation');
+            const imgVictory = document.getElementById('imgWin');
+
+            victoryPopUp.classList.remove('display-none');
+            this.$refs['fireworks'].play()
+            this.$refs['drink'].play()
+            imgVictory.classList.remove('display-none');
+
+            setTimeout(() => {
+                imgVictory.classList.add('display-none');
+                victoryPopUp.classList.add('display-none');
+                this.$refs['fireworks'].stop();
+                this.$refs['drink'].stop()
+
+                this.nextOrder();
+            }, 2500);
+
+        },
         handleScroll: function () {
             if (this.scTimer) return;
             this.scTimer = setTimeout(() => {
@@ -195,6 +313,12 @@ export default {
 }
 const randomCoktail = getRandomCoktail();
 const ingredients = getIngredients();
+
+const startingSentencesFirstIngredient = ["First, ", "Begin with ", "First we need, ", "Start with "]
+const startingSentencesRandomIngredient = ["Now put some ", "Keep up we need ", "Don't forget ", "Focus and add ", "Now we need "]
+const badIngredientSentence = ["You want to make sock juice ?", "Focus !", "Wrong !", "Please, focus", "It's obvious !", "You look like an amateur", "Did you really think it was that?", "Are you trying to kill me ?!"]
+const startingSentencesLastIngredient = ["Finally, all we need is ", "And end with ", "Wow, now we just need ", "Finish with some ", "Impressive, we are just missing "]
+const endingSentence = ["Nice job boy.", "Nice.", "We're good.", "Not bad !", "Well done."]
 </script>
 
 <style>
@@ -206,6 +330,7 @@ const ingredients = getIngredients();
     color: #2c3e50;
     margin: 0;
     padding: 0;
+    position: relative
 }
 
 html,
@@ -217,5 +342,68 @@ body {
 
 h1 {
     margin: 5px;
+}
+
+#popUpAnimation {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    width: 200px;
+    height: 200px;
+    background-color: rgba(0, 0, 0, 0.574);
+    border-radius: 100%;
+    -webkit-animation: slide-in-bottom 0.3s cubic-bezier(0.250, 0.460, 0.450, 0.940) both, fade-out 0.5s ease-out both 0.6s;
+    animation: slide-in-bottom 0.3s cubic-bezier(0.250, 0.460, 0.450, 0.940) both, fade-out 0.5s ease-out both 0.6s;
+}
+
+#popWinAnimation {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.751);
+
+    -webkit-animation: fade-out 1s ease-out both 1.5s;
+    animation: fade-out 1s ease-out both 1.5s;
+}
+
+#popWinAnimation .lottie-animation-container {
+    width: 100%;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+}
+
+#popWinAnimation img {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    width: 250px;
+    height: 250px;
+    border-radius: 100%;
+    -webkit-animation: bounce-in-top 1.1s both 0.2s;
+    animation: bounce-in-top 1.1s both 0.2s;
+    z-index: 1;
+}
+
+.display-none {
+    display: none;
+}
+
+#popUpAnimation svg {
+    width: 50%;
+    -webkit-animation: flicker-in-1 0.6s linear both;
+    animation: flicker-in-1 0.6s linear both;
 }
 </style>

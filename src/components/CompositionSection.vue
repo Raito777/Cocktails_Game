@@ -10,19 +10,20 @@
                 @click="removeIngredient(ingredient)"
                 v-for="ingredient in selectedIngredients"
                 :key="ingredient.idIngredient"
-                :name="ingredient.ingredients[0].strIngredient"
+                :name="ingredient.strIngredient"
                 :good="ingredient.good"></IngredientCard>
             <MissingIngredientCard
                 v-for="missingIngredient in missingIngredients"
                 :key="missingIngredient.idIngredient"
-                :type="missingIngredient.ingredients[0].strType"
-                :name="missingIngredient.ingredients[0].strIngredient">
+                :type="missingIngredient.strType"
+                :name="missingIngredient.strIngredient">
             </MissingIngredientCard>
         </div>
         <div class="resultDiv">
             <!-- <span>Missing ingredients : <b>{{missingIngredients.length}}</b></span> -->
             <img v-if="guessedDrink" v-bind:src="guessedDrink.strDrinkThumb" v-bind:alt="guessedDrink.strDrink" :class="[`victory--${victory}`]">
-            <img v-else src="../assets/guess.png" alt="Question mark">
+            <!-- <img v-else src="../assets/guess.png" alt="Question mark"> -->
+            <Vue3Lottie v-else :animationData="drinkJSON" :height="125" :width="125" ></Vue3Lottie>
             <span>Result :
                 <b v-if="guessedDrink" class="guessed-drink"> {{ guessedDrink.strDrink }} </b>
                 <b v-else class="guessed-drink"> ? </b>
@@ -37,12 +38,22 @@
 <script>
 import IngredientCard from './IngredientCard.vue';
 import MissingIngredientCard from './MissingIngredientCard.vue';
+import { Vue3Lottie } from 'vue3-lottie'
+import 'vue3-lottie/dist/style.css'
+
+import drinkJSON from '../assets/86401-cocktail-mix.json'
 
 export default {
     name: 'CompositionSection',
     components: {
         IngredientCard,
-        MissingIngredientCard
+        MissingIngredientCard,
+        Vue3Lottie
+    },
+    data() {
+        return {
+            drinkJSON,
+        }
     },
     props: {
         msg: String,
@@ -80,7 +91,6 @@ export default {
 </script>
 
 <style scoped>
-
 .guessed-drink{
     -webkit-animation: fade-in 1.2s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
     animation: fade-in 1.2s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;

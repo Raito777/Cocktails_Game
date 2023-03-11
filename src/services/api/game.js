@@ -22,7 +22,7 @@ function checkOrder(randomDrink, selectedIngredients) {
 
       let matchFound = false;
       for (let j = 0; j < selectedIngredients.length; j++) {
-        const selIngredient = selectedIngredients[j].ingredients[0].strIngredient;
+        const selIngredient = selectedIngredients[j].strIngredient;
         if (ingredient.toLowerCase() == selIngredient.toLowerCase()) {
           matchFound = true;
           break; // match found, exit loop
@@ -36,7 +36,6 @@ function checkOrder(randomDrink, selectedIngredients) {
 }
 
 function checkPossibleDrink(possibleDrink, selectedIngredients) {
-  console.log(possibleDrink)
   if(selectedIngredients.length == 1){
     const randomIndex = Math.floor(Math.random() * possibleDrink[0].drinks.length);
     let firstRandomDrink = possibleDrink[0].drinks[randomIndex].idDrink;
@@ -52,8 +51,6 @@ function checkPossibleDrink(possibleDrink, selectedIngredients) {
     }
   }, null)
   
-
-  console.log(idDrinksCommuns)
   if(idDrinksCommuns){
     if(idDrinksCommuns.length == 1){
       return idDrinksCommuns[0]
@@ -66,35 +63,44 @@ function checkPossibleDrink(possibleDrink, selectedIngredients) {
   return 0
 }
 
-import { getIngredientByName } from './coktailsAPI'
+function getIngredientByName(name, ingredients) {
 
-async function getMissingIngredients(randomDrink, selectedIngredients){
+  // Flatten the array of ingredients using the `flatMap` method
+  const flattenedIngredients = ingredients.flatMap(obj => obj.ingredients);
+
+  // Use the `find` method to search for the ingredient with the specified name
+  const ingredient = flattenedIngredients.find(obj => obj.strIngredient.toLowerCase() === name);
+
+  return ingredient;
+}
+
+function getMissingIngredients(randomDrink, selectedIngredients){
+  const ingredients = require('../../../public/data/ingredients.json');
+
   let numIngredient = 1;
   let missingIngredients = [];
   while (randomDrink[`strIngredient${numIngredient}`] !== null) {
     numIngredient++;
   }
   numIngredient--;
-  const promises = [];
   for (let i = 1; i <= numIngredient; i++) {
     const ingredientName = randomDrink[`strIngredient${i}`];
-    const promise = getIngredientByName(ingredientName)
-      .then(resultIngredient => {
-        let isMissing = true;
-        for (let j = 0; j < selectedIngredients.length; j++) {
-          const selIngredient = selectedIngredients[j].ingredients[0].strIngredient;
-          if (ingredientName.toLowerCase() == selIngredient.toLowerCase()) {
-            isMissing = false;
-            break; // match found, exit loop
-          }
+    const ingredient = new Proxy (getIngredientByName(ingredientName.toLowerCase(), ingredients), {})
+
+    let isMissing = true;
+      for (let j = 0; j < selectedIngredients.length; j++) {
+        const selIngredient = selectedIngredients[j].strIngredient;
+        if (ingredientName.toLowerCase() == selIngredient.toLowerCase()) {
+          isMissing = false;
+          break; // match found, exit loop
         }
-        if (isMissing) {
-          missingIngredients.push(resultIngredient)
-        }
-      });
-    promises.push(promise);
+      }
+      if (isMissing) {
+        missingIngredients.push(ingredient)
+      }
+
+
   }
-  await Promise.all(promises);
 
   return missingIngredients; // all ingredients matched
 }
@@ -105,11 +111,10 @@ function checkIngredient(randomDrink, ingredientToCheck){
     numIngredient++;
   }
   numIngredient--;
-  console.log(ingredientToCheck);
   for (let i = 1; i <= numIngredient; i++) {
     const ingredient = randomDrink[`strIngredient${i}`];
 
-      if (ingredient.toLowerCase() == ingredientToCheck.ingredients[0].strIngredient.toLowerCase()) {
+      if (ingredient.toLowerCase() == ingredientToCheck.strIngredient.toLowerCase()) {
         return true
       }
     
@@ -131,6 +136,28 @@ function sortIngredientsByType(ingredients) {
   return sortedArray;
 }
 
+function get4RandomIngredientsFromType(ingredients, theIngredient, selectedIngredients) {
+  let randomIngredients = [];
+  const ingredientFromType = ingredients.filter((ingredient) => {
+    if (ingredient.ingredients[0].strType == theIngredient.strType) {
+      return ingredient;
+    }
+  });
+
+  while(randomIngredients.length < 4){
+    const randomIndex = Math.floor(Math.random() * ingredientFromType.length);
+    const ingredient = ingredientFromType[randomIndex];
+    if (!randomIngredients.some(ing => ing.idIngredient === ingredient.ingredients[0].idIngredient) && !randomIngredients.includes(ingredient) && !selectedIngredients.includes(ingredient)) {
+      if(ingredient.ingredients[0].good == "false"){
+        ingredient.ingredients[0].good = null;
+      }
+      randomIngredients.push(ingredient.ingredients[0]);
+    }
+  }
+  return randomIngredients;
+}
+
+export { get4RandomIngredientsFromType }
 export { sortIngredientsByType }
 export { checkIngredient }
 export { getMissingIngredients }
