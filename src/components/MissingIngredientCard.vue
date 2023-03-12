@@ -28,8 +28,8 @@ export default {
 
 <style scoped>
 .missingCard {
-    width: 80px;
-    height: 80px;
+    width: 60px;
+    height: 60px;
     background-color: #202531;
     display: flex;
     justify-content: center;
@@ -44,8 +44,6 @@ export default {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    margin: 5px;
-    width: 70px;
     transition: flex-basis 0.2s ease-in-out;
 
 }

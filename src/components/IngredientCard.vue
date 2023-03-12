@@ -64,7 +64,6 @@ export default {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    margin: 5px;
     transition: flex-basis 0.2s ease-in-out;
 }
 
@@ -125,12 +124,12 @@ export default {
     height:100%;}
 
 .card--normal {
-    width: 70px;
+    width: 60px;
 }
 
 .card--normal .ingredientDivImg {
-    width: 80px;
-    height: 80px;
+    width: 60px;
+    height: 60px;
     position: relative;
     display: flex;
     flex-direction: column;

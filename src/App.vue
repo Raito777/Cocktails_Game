@@ -13,7 +13,8 @@
     :randomDrink="randomDrink"
     :guessedDrink="guessedDrink"
     :selectedIngredients="selectedIngredients"
-    :score="score"></CompositionSection>
+    :score="score"
+    ref="compositionSection"></CompositionSection>
 <IngredientsList
     :ingredients="quizzIngredients"
     :sortedIngredients="sortedIngredients"
@@ -135,6 +136,7 @@ export default {
                 this.sortedIngredients = sortIngredientsByType(this.ingredients)
                 this.updateQuizzIngredients()
                 this.updateBarmanPhrase(true)
+                this.$refs.compositionSection.missingIngredientsWithDefaults(this.selectedIngredients.length);
             });
         });
 
@@ -142,6 +144,7 @@ export default {
     },
     methods: {
         onOrderSubmited() {
+
             this.missingIngredients = getMissingIngredients(this.randomDrink, this.selectedIngredients)
 
             if (this.randomDrink == this.guessedDrink) {
@@ -157,6 +160,7 @@ export default {
                 this.victory = true;
                 this.updateBarmanPhrase(true);
                 this.victoryAnimation();
+                this.$refs.compositionSection.missingIngredientsWithDefaults(this.selectedIngredients.length);
             }
 
         },
@@ -211,10 +215,11 @@ export default {
                 this.guessedDrink = '';
                 this.updateQuizzIngredients();
                 this.updateBarmanPhrase(true)
-
+                this.$refs.compositionSection.missingIngredientsWithDefaults(this.selectedIngredients.length);
             });
         },
         onIngredientAdded(ingredient) {
+            this.$refs.compositionSection.missingIngredientsWithDefaults(this.selectedIngredients.length);
 
             const popUpDiv = document.getElementById('popUpAnimation');
 

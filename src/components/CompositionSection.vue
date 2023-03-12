@@ -5,25 +5,27 @@
         <span>Total score : <b>{{score}}</b></span>
     </div>
     <div class="coktailInfoDiv">
-        <div class="compositionDiv">
-            <IngredientCard
-                @click="removeIngredient(ingredient)"
-                v-for="ingredient in selectedIngredients"
-                :key="ingredient.idIngredient"
-                :name="ingredient.strIngredient"
-                :good="ingredient.good"></IngredientCard>
-            <MissingIngredientCard
-                v-for="missingIngredient in missingIngredients"
-                :key="missingIngredient.idIngredient"
-                :type="missingIngredient.strType"
-                :name="missingIngredient.strIngredient">
-            </MissingIngredientCard>
-        </div>
+        <IngredientCard
+            @click="removeIngredient(ingredient)"
+            v-for="ingredient in selectedIngredients"
+            :key="ingredient.idIngredient"
+            :name="ingredient.strIngredient"
+            :good="ingredient.good"></IngredientCard>
+        <MissingIngredientCard
+            v-for="missingIngredient in defaultIngredients"
+            :key="missingIngredient.idIngredient"
+            :type="missingIngredient.strType"
+            :name="missingIngredient.strIngredient">
+        </MissingIngredientCard>
         <div class="resultDiv">
             <!-- <span>Missing ingredients : <b>{{missingIngredients.length}}</b></span> -->
             <img v-if="guessedDrink" v-bind:src="guessedDrink.strDrinkThumb" v-bind:alt="guessedDrink.strDrink" :class="[`victory--${victory}`]">
             <!-- <img v-else src="../assets/guess.png" alt="Question mark"> -->
-            <Vue3Lottie v-else :animationData="drinkJSON" :height="125" :width="125" ></Vue3Lottie>
+            <Vue3Lottie
+                v-else
+                :animationData="drinkJSON"
+                :height="125"
+                :width="125"></Vue3Lottie>
             <span>Result :
                 <b v-if="guessedDrink" class="guessed-drink"> {{ guessedDrink.strDrink }} </b>
                 <b v-else class="guessed-drink"> ? </b>
@@ -38,7 +40,9 @@
 <script>
 import IngredientCard from './IngredientCard.vue';
 import MissingIngredientCard from './MissingIngredientCard.vue';
-import { Vue3Lottie } from 'vue3-lottie'
+import {
+    Vue3Lottie
+} from 'vue3-lottie'
 import 'vue3-lottie/dist/style.css'
 
 import drinkJSON from '../assets/86401-cocktail-mix.json'
@@ -53,6 +57,7 @@ export default {
     data() {
         return {
             drinkJSON,
+            defaultIngredients: [ /* Vos ingrédients par défaut ici */ ],
         }
     },
     props: {
@@ -74,10 +79,13 @@ export default {
             required: true,
             default: 0,
         },
-        score:{
-            required:true,
-            default:0
-        }
+        score: {
+            required: true,
+            default: 0
+        },
+    },
+    computed: {
+
     },
     methods: {
         nextOrder() {
@@ -85,23 +93,36 @@ export default {
         },
         removeIngredient(ingredient) {
             this.$emit('ingredient-removed', ingredient);
+        },
+        missingIngredientsWithDefaults(selectedLength) {
+            console.log("LES MISSINGS")
+            const missingCount = 15 - this.missingIngredients.length - selectedLength;
+            let newMissingIngredient = [];
+            newMissingIngredient = this.missingIngredients || [];
+            for(let i = 0; i < missingCount; i++){
+                //const defaultIngredient = { strType: 'default', strIngredient: 'default' };
+                newMissingIngredient.push({ strType: 'default', strIngredient: 'default' })
+            }
+            
+            this.defaultIngredients = newMissingIngredient
+            console.log(this.defaultIngredients)
         }
-    }
+    },
 }
 </script>
 
 <style scoped>
-.guessed-drink{
+.guessed-drink {
     -webkit-animation: fade-in 1.2s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
     animation: fade-in 1.2s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
 }
+
 .resultDiv button {
     background: white;
     border-radius: 50px;
     padding: 5px;
     width: 150px;
     border: none;
-    ;
 }
 
 .victory--false {
@@ -134,7 +155,8 @@ export default {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 10px;
+    grid-column: 2 / 5;
+    grid-row: 2 / 5;
 }
 
 .compositionDiv {
@@ -149,7 +171,11 @@ export default {
 .coktailInfoDiv {
     width: 100%;
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(5, 1fr);
+    justify-items: center; /* centrer horizontalement */
+  align-items: center; /* centrer verticalement */
+    grid-gap:10px;
     height: 90%;
 }
 
@@ -166,6 +192,4 @@ export default {
     align-items: flex-start;
     margin-bottom: 10px;
 }
-
-
 </style>
