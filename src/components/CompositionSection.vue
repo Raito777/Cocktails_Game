@@ -94,11 +94,11 @@ export default {
         removeIngredient(ingredient) {
             this.$emit('ingredient-removed', ingredient);
         },
-        missingIngredientsWithDefaults(selectedLength) {
+        missingIngredientsWithDefaults(selected, missing) {
             console.log("LES MISSINGS")
-            const missingCount = 15 - this.missingIngredients.length - selectedLength;
+            const missingCount = 16 - selected.length - missing.length;
             let newMissingIngredient = [];
-            newMissingIngredient = this.missingIngredients || [];
+            newMissingIngredient = missing || [];
             for(let i = 0; i < missingCount; i++){
                 //const defaultIngredient = { strType: 'default', strIngredient: 'default' };
                 newMissingIngredient.push({ strType: 'default', strIngredient: 'default' })
@@ -170,13 +170,17 @@ export default {
 
 .coktailInfoDiv {
     width: 100%;
+    height: 90%;
+    max-width:360px;
+    max-height: 360px;
+    margin:auto;
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     grid-template-rows: repeat(5, 1fr);
     justify-items: center; /* centrer horizontalement */
-  align-items: center; /* centrer verticalement */
-    grid-gap:10px;
-    height: 90%;
+    align-items: center; /* centrer verticalement */
+    grid-gap:0;
+    overflow: hidden;
 }
 
 .top-div {
@@ -184,6 +188,7 @@ export default {
     border-color: 1px solid black;
     color: white;
     padding: 20px 10px;
+    overflow: hidden;
 }
 
 .infoDiv {
@@ -191,5 +196,26 @@ export default {
     justify-content: space-between;
     align-items: flex-start;
     margin-bottom: 10px;
+}
+
+@media (min-width: 1000px){
+    .top-div {
+        display: flex;
+        flex-direction: column;
+    }
+    .lottie-animation-container{
+        min-width:200px;
+        min-height:200px;
+    }
+    .resultDiv img{
+        width:180px;
+        height:180px;
+    }
+    .resultDiv span{
+        font-size:1.5rem;
+    }
+    .top-div span{
+        font-size: 1.5rem;
+    }
 }
 </style>

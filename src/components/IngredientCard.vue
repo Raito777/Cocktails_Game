@@ -5,12 +5,12 @@
             <g transform="matrix(0.780956,-0.780956,1.17148,1.17148,-143.904,81.6532)">
                 <path
                     d="M201.792,84.754C201.792,63.642 176.08,46.502 144.411,46.502C112.742,46.502 87.031,63.642 87.031,84.754L87.031,395.195C87.031,416.307 112.742,433.447 144.411,433.447C176.08,433.447 201.792,416.307 201.792,395.195L201.792,84.754Z"
-                    style="fill:white;" />
+                     />
             </g>
             <g transform="matrix(-0.780956,-0.780956,-1.17148,1.17148,643.904,81.6532)">
                 <path
                     d="M201.792,84.754C201.792,63.642 176.08,46.502 144.411,46.502C112.742,46.502 87.031,63.642 87.031,84.754L87.031,395.195C87.031,416.307 112.742,433.447 144.411,433.447C176.08,433.447 201.792,416.307 201.792,395.195L201.792,84.754Z"
-                    style="fill:white;" />
+                     />
             </g>
         </svg>
         <img :src="'https://www.thecocktaildb.com/images/ingredients/'+ name +'-Medium.png'">
@@ -56,15 +56,17 @@ export default {
 .ingredientDivImg svg{
     position:absolute;
     z-index:1;
-    width:50%;
+    width:40%;
     -webkit-animation: swing-in-top-fwd 0.5s cubic-bezier(0.175, 0.885, 0.320, 1.275) both;
     animation: swing-in-top-fwd 0.5s cubic-bezier(0.175, 0.885, 0.320, 1.275) both;
+    fill: red;
 }
 .ingredientCard {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     transition: flex-basis 0.2s ease-in-out;
+    cursor:pointer;
 }
 
 .card--0{
@@ -165,6 +167,7 @@ export default {
 
 .card--large .ingredientDivImg img {
     width: 60%;
+    max-width:100px;
     filter: drop-shadow(0px 6px 9px #000);
     -webkit-animation: swing-in-bottom-fwd 0.3s cubic-bezier(0.175, 0.885, 0.320, 1.275) both 0.1s;
     animation: swing-in-bottom-fwd 0.3s cubic-bezier(0.175, 0.885, 0.320, 1.275) both 0.1s;
@@ -181,5 +184,35 @@ export default {
 .ingredientDivImg img {
     width: 60%;
     height: auto;
+}
+
+@media (min-width: 1000px){
+    .card--large{
+        width:90%;
+        height:4em;
+        text-align: left;
+    }
+    .card--large .ingredientDivImg{
+        padding:20px 20px;
+        border-radius:10em
+    }
+    .card--large .ingredientDivImg img{
+        position:absolute;
+        max-width:150px;
+        right:0;
+        bottom:-20px;
+    }
+    .card--large .ingredientDivImg span{
+        font-size:1rem;
+    }
+    .ingredientCard span{
+        font-size:0.9em;
+    }
+    .ingredientDivImg svg{
+        position:absolute;
+        width:175%;
+        height:175%;
+        fill: red;
+    }
 }
 </style>

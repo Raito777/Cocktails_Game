@@ -1,7 +1,7 @@
 <template>
 <div class="missingCardDiv">
     <div class="missingCard">
-        <span>{{type ? type : 'Misc.'}}</span>
+        <span v-if="type != 'default'">{{type ? type : 'Misc.'}}</span>
     </div>
 </div>
 </template>
@@ -50,7 +50,7 @@ export default {
 .missingCard span{
     color: #4f5f80;
     font-weight:bold;
-    font-size: 0.8rem;
+    font-size: 0.7rem;
 
 }
 .name{
@@ -58,5 +58,16 @@ export default {
     font-size: 0.7rem;
     width: 100%;
     visibility: hidden;
+}
+
+@media (min-width: 1000px){
+    .missingCard span{
+        font-size:1em;
+    }
+}
+@media (max-width: 420px){
+    .missingCard span{
+        font-size:0.5em;
+    }
 }
 </style>

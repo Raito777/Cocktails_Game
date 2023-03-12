@@ -1,9 +1,10 @@
 <template>
-<div class="header">
+<header class="header">
     <h1>
         Mixology Quest
     </h1>
-</div>
+    <hr>
+</header>
 <CompositionSection
     @ingredient-removed="removeIngedient"
     @next-order="nextOrder"
@@ -57,7 +58,7 @@
         :autoPlay="false"
         :height="400"
         :width="400"
-        ref="drink" ></Vue3Lottie>
+        ref="drink"></Vue3Lottie>
 
 </div>
 <div
@@ -136,7 +137,7 @@ export default {
                 this.sortedIngredients = sortIngredientsByType(this.ingredients)
                 this.updateQuizzIngredients()
                 this.updateBarmanPhrase(true)
-                this.$refs.compositionSection.missingIngredientsWithDefaults(this.selectedIngredients.length);
+                this.$refs.compositionSection.missingIngredientsWithDefaults(this.selectedIngredients, this.missingIngredients);
             });
         });
 
@@ -160,7 +161,7 @@ export default {
                 this.victory = true;
                 this.updateBarmanPhrase(true);
                 this.victoryAnimation();
-                this.$refs.compositionSection.missingIngredientsWithDefaults(this.selectedIngredients.length);
+                this.$refs.compositionSection.missingIngredientsWithDefaults(this.selectedIngredients, this.missingIngredients);
             }
 
         },
@@ -169,7 +170,7 @@ export default {
             this.quizzIngredients = get4RandomIngredientsFromType(this.ingredients, this.missingIngredients[0], this.selectedIngredients)
             console.log(this.quizzIngredients)
             console.log(this.missingIngredients[0])
-            if(!this.quizzIngredients.some(ing => ing.idIngredient === this.missingIngredients[0].idIngredient)){
+            if (!this.quizzIngredients.some(ing => ing.idIngredient === this.missingIngredients[0].idIngredient)) {
                 console.log("PUSHING TO THE LIMIT")
                 const randomIndex = Math.floor(Math.random() * this.quizzIngredients.length);
                 this.quizzIngredients[randomIndex] = this.missingIngredients[0]
@@ -215,11 +216,10 @@ export default {
                 this.guessedDrink = '';
                 this.updateQuizzIngredients();
                 this.updateBarmanPhrase(true)
-                this.$refs.compositionSection.missingIngredientsWithDefaults(this.selectedIngredients.length);
+                this.$refs.compositionSection.missingIngredientsWithDefaults(this.selectedIngredients, this.missingIngredients);
             });
         },
         onIngredientAdded(ingredient) {
-            this.$refs.compositionSection.missingIngredientsWithDefaults(this.selectedIngredients.length);
 
             const popUpDiv = document.getElementById('popUpAnimation');
 
@@ -231,6 +231,8 @@ export default {
                 this.addPossibledrink(possibleDrinks)
                 this.updateQuizzIngredients()
                 this.updateBarmanPhrase(true)
+                this.$refs.compositionSection.missingIngredientsWithDefaults(this.selectedIngredients, this.missingIngredients);
+
                 popUpDiv.classList.remove('display-none')
                 setTimeout(() => {
                     popUpDiv.classList.add('display-none');
@@ -238,10 +240,10 @@ export default {
             } else {
                 const index = this.quizzIngredients.findIndex(ingredientObj => ingredientObj.idIngredient === ingredient.idIngredient);
                 this.quizzIngredients[index].good = false
-
                 console.log(this.quizzIngredients)
                 ingredient.good = 'false'
                 this.updateBarmanPhrase(false)
+                this.$refs.compositionSection.missingIngredientsWithDefaults(this.selectedIngredients, this.missingIngredients);
             }
 
         },
@@ -263,6 +265,8 @@ export default {
             this.victory = false;
             this.updateGuessedDrink(checkPossibleDrink(this.possibleDrinks, this.selectedIngredients))
             this.onOrderSubmited();
+            this.$refs.compositionSection.missingIngredientsWithDefaults(this.selectedIngredients, this.missingIngredients);
+
         },
         addPossibledrink(possibleDrinks) {
             if (!this.isClose) {
@@ -341,38 +345,45 @@ const endingSentence = ["Nice job boy.", "Nice.", "We're good.", "Not bad !", "W
     margin: 0;
     padding: 0;
     position: relative;
-    display:grid;
+    display: grid;
     grid-template-rows: 50px 1fr 1fr;
-    grid-template-columns:1fr;
-
-    grid-template-areas: 
-    "top"
-    "middle"
-    "bottom";
+    grid-template-columns: 1fr;
+    grid-template-areas:
+        "top"
+        "middle"
+        "bottom";
     grid-row-gap: 0;
     height: 100%;
+    overflow: hidden;
+    background-color: #13161E;
 }
-.header{
-    grid-area: top;
 
+header {
+    grid-area: top;
+    color:white;
 }
-.top-div{
+
+.top-div {
     grid-area: middle;
 }
-.ingredientsList{
+
+.ingredientsList {
     grid-area: bottom;
 }
-*{
+
+* {
     box-sizing: border-box;
 }
+
 html,
 body {
     margin: 0;
     padding: 0;
     overflow-x: hidden;
-    height:100%
+    height: 100%
 }
-body{
+
+body {
     height: 100vh;
     width: 100vw;
 }
@@ -406,7 +417,7 @@ h1 {
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.751);
-
+    z-index:2;
     -webkit-animation: fade-out 1s ease-out both 1.5s;
     animation: fade-out 1s ease-out both 1.5s;
 }
@@ -443,4 +454,57 @@ h1 {
     -webkit-animation: flicker-in-1 0.6s linear both;
     animation: flicker-in-1 0.6s linear both;
 }
+
+@media (min-width: 1000px) {
+    #app {
+        display: grid;
+        grid-template-rows: 120px 1fr;
+        grid-template-columns: 1fr 1fr;
+        grid-template-areas:
+            "top top"
+            "middle bottom";   
+    }
+    header{
+        font-size:2em;
+        position:relative;
+        padding:0.5em;
+    }
+    header hr{
+        right:0;
+        left:0;
+        margin:0 auto;
+        width:40%;
+        height:0.1em;
+        position:absolute;
+        bottom:0;
+        z-index:1;
+        border:none;
+        background-color: white;
+        border-radius:5em;;
+    }
+    .coktailInfoDiv{
+        min-width: 500px;
+        min-height: 500px;
+    }
+    
+    .missingCard, .card--normal .ingredientDivImg, .card--normal {
+        min-width:90px;
+        min-height:90px;
+    }
+}
+@media (max-width: 420px){
+    .missingCard, .card--normal .ingredientDivImg, .card--normal {
+        max-width:50px;
+        max-height:50px;
+    }
+    .resultDiv img{
+        max-width:100px;
+        max-height:100px;
+    }
+    .resultDiv .lottie-animation-container{
+        max-width:100px;
+        max-height:100px;
+    }
+}
+
 </style>
