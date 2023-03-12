@@ -147,13 +147,15 @@ function get4RandomIngredientsFromType(ingredients, theIngredient, selectedIngre
   while(randomIngredients.length < 4){
     const randomIndex = Math.floor(Math.random() * ingredientFromType.length);
     const ingredient = ingredientFromType[randomIndex];
-    if (!randomIngredients.some(ing => ing.idIngredient === ingredient.ingredients[0].idIngredient) && !randomIngredients.includes(ingredient) && !selectedIngredients.includes(ingredient)) {
+    if (!randomIngredients.some(ing => ing.idIngredient === ingredient.ingredients[0].idIngredient) && ingredient != theIngredient && !randomIngredients.some(ing => ing.idIngredient === selectedIngredients.idIngredient)) {
       if(ingredient.ingredients[0].good == "false"){
         ingredient.ingredients[0].good = null;
       }
       randomIngredients.push(ingredient.ingredients[0]);
     }
   }
+  console.log("before pushing")
+  console.log(randomIngredients)
   return randomIngredients;
 }
 

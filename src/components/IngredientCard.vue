@@ -129,8 +129,8 @@ export default {
 }
 
 .card--normal .ingredientDivImg {
-    width: 60px;
-    height: 60px;
+    width: 80px;
+    height: 80px;
     position: relative;
     display: flex;
     flex-direction: column;
@@ -147,8 +147,8 @@ export default {
     width:100%;
     height:100%;
     display: flex;
-    justify-content: center;
-    align-items: flex-end;
+    justify-content: space-around;
+    flex-direction: column;
     position: relative;
     border-radius:0;
 }
@@ -157,7 +157,7 @@ export default {
     display: block;
     margin-bottom: 5px;
     font-weight: bold;
-    font-size: 0.8rem;
+    font-size: 1 rem;
 }
 
 .card--large span {
@@ -165,9 +165,7 @@ export default {
 }
 
 .card--large .ingredientDivImg img {
-    position: absolute;
-    top: 10px;
-    width: 50%;
+    width: 60%;
     filter: drop-shadow(0px 6px 9px #000);
     -webkit-animation: swing-in-bottom-fwd 0.3s cubic-bezier(0.175, 0.885, 0.320, 1.275) both 0.1s;
     animation: swing-in-bottom-fwd 0.3s cubic-bezier(0.175, 0.885, 0.320, 1.275) both 0.1s;

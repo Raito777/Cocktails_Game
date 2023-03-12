@@ -158,7 +158,6 @@ export default {
     border-color: 1px solid black;
     color: white;
     padding: 20px 10px;
-    height:400px;
 }
 
 .infoDiv {

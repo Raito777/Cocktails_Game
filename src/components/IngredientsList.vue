@@ -80,13 +80,16 @@ export default {
 </script>
 
 <style scoped>
+.ingredientsList{
+    display:grid;
+    grid-template-rows: 0.2fr 1fr;
+}
 .ingredientsDiv {
     overflow-y: scroll;
     overflow-x:hidden;
     background-color: rgb(28, 28, 28);
     color: white;
     height:100%;
-    min-height:300px;
     display:grid;
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 1fr 1fr;

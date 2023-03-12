@@ -1,5 +1,5 @@
 <template>
-<div>
+<div class="header">
     <h1>
         Mixology Quest
     </h1>
@@ -163,8 +163,13 @@ export default {
         updateQuizzIngredients() {
             console.log("Missing")
             this.quizzIngredients = get4RandomIngredientsFromType(this.ingredients, this.missingIngredients[0], this.selectedIngredients)
-            const randomIndex = Math.floor(Math.random() * this.quizzIngredients.length);
-            this.quizzIngredients[randomIndex] = this.missingIngredients[0]
+            console.log(this.quizzIngredients)
+            console.log(this.missingIngredients[0])
+            if(!this.quizzIngredients.some(ing => ing.idIngredient === this.missingIngredients[0].idIngredient)){
+                console.log("PUSHING TO THE LIMIT")
+                const randomIndex = Math.floor(Math.random() * this.quizzIngredients.length);
+                this.quizzIngredients[randomIndex] = this.missingIngredients[0]
+            }
             for (let i = 0; i < this.quizzIngredients.length; i++) {
                 this.quizzIngredients[i].index = i;
             }
@@ -330,14 +335,41 @@ const endingSentence = ["Nice job boy.", "Nice.", "We're good.", "Not bad !", "W
     color: #2c3e50;
     margin: 0;
     padding: 0;
-    position: relative
-}
+    position: relative;
+    display:grid;
+    grid-template-rows: 50px 1fr 1fr;
+    grid-template-columns:1fr;
 
+    grid-template-areas: 
+    "top"
+    "middle"
+    "bottom";
+    grid-row-gap: 0;
+    height: 100%;
+}
+.header{
+    grid-area: top;
+
+}
+.top-div{
+    grid-area: middle;
+}
+.ingredientsList{
+    grid-area: bottom;
+}
+*{
+    box-sizing: border-box;
+}
 html,
 body {
     margin: 0;
     padding: 0;
     overflow-x: hidden;
+    height:100%
+}
+body{
+    height: 100vh;
+    width: 100vw;
 }
 
 h1 {

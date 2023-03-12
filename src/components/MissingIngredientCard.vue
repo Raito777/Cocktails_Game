@@ -3,7 +3,6 @@
     <div class="missingCard">
         <span>{{type ? type : 'Misc.'}}</span>
     </div>
-    <span class="name">{{type ? type : 'Misc.'}}</span>
 </div>
 </template>
 
@@ -29,8 +28,8 @@ export default {
 
 <style scoped>
 .missingCard {
-    width: 60px;
-    height: 60px;
+    width: 80px;
+    height: 80px;
     background-color: #202531;
     display: flex;
     justify-content: center;
