@@ -1,5 +1,5 @@
 <template>
-<div :class="['ingredientCard', `card--${size}`, `card--${hidden}`, `card--${index}`]">
+<div :class="['ingredientCard', `card--${size}`, `card--${hidden}`, `card--${index}`, `pushable`]">
     <div :class="['ingredientDivImg', `card--${size}`, `card--${hidden}`]">
         <svg v-if="checked == 'false'" width="100%" height="100%" viewBox="0 0 500 500" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
             <g transform="matrix(0.780956,-0.780956,1.17148,1.17148,-143.904,81.6532)">
@@ -59,7 +59,9 @@ export default {
     width:40%;
     -webkit-animation: swing-in-top-fwd 0.5s cubic-bezier(0.175, 0.885, 0.320, 1.275) both;
     animation: swing-in-top-fwd 0.5s cubic-bezier(0.175, 0.885, 0.320, 1.275) both;
-    fill: red;
+    fill: #AD2831;
+    
+
 }
 .ingredientCard {
     display: flex;
@@ -86,7 +88,7 @@ export default {
     animation: swing-in-top-fwd 0.3s cubic-bezier(0.175, 0.885, 0.320, 1.275) both 0.6s;
 }
 .card--true {
-    border: 1px solid #2F323C;
+    border: 1px solid #D95A4E;
     background: linear-gradient(#202531, #202531) padding-box,
         linear-gradient(to bottom, #2F323C, rgb(0, 255, 26)) border-box;
     border-radius: 50em;
@@ -96,7 +98,7 @@ export default {
 }
 
 .card--false {
-    border: 1px solid #2F323C;
+    border: 1px solid #D95A4E;
     background: linear-gradient(#202531, #202531) padding-box,
         linear-gradient(to bottom, #2F323C, rgb(255, 0, 0)) border-box;
     border-radius: 50em;
@@ -123,8 +125,21 @@ export default {
 
 .card--large {
     width:100%;
-    height:100%;}
+    height:100%;
+    transition:0.2s cubic-bezier(0.075, 0.82, 0.165, 1)
+}
 
+.card--large .ingredientDivImg{
+    -webkit-box-shadow: 0px 5px 0px 0px #02253b;
+    box-shadow: 0px 5px 0px 0px #02253b;
+}
+
+.card--large:hover .ingredientDivImg{
+    transform:translateY(-5px);
+    -webkit-box-shadow: 0px 10px 0px 0px #02253b;
+    box-shadow: 0px 10px 0px 0px #02253b;
+    outline:none;
+}
 .card--normal {
     width: 60px;
 }
@@ -136,7 +151,7 @@ export default {
     display: flex;
     flex-direction: column;
     padding: 5px;
-
+    background-color:#78CE8A;
 }
 
 .card--large .ingredientDivImg span {
@@ -144,7 +159,6 @@ export default {
 }
 
 .card--large .ingredientDivImg {
-    border: 1px solid #2F323C;
     width:100%;
     height:100%;
     display: flex;
@@ -152,6 +166,9 @@ export default {
     flex-direction: column;
     position: relative;
     border-radius:0;
+    background-color: #0F0F0F;
+    color:white;
+    border:1px solid white;
 }
 
 .card--large .ingredientDivImg span {
@@ -174,16 +191,19 @@ export default {
 }
 
 .ingredientDivImg {
-    background-color: #202531;
+    background: #F1FF9F;
     display: flex;
     justify-content: center;
     align-items: center;
     border-radius: 10px;
+    color:black;
 }
 
 .ingredientDivImg img {
     width: 60%;
     height: auto;
+    filter: drop-shadow(0px 3px 6px #000);
+
 }
 
 @media (min-width: 1000px){
@@ -194,25 +214,28 @@ export default {
     }
     .card--large .ingredientDivImg{
         padding:20px 20px;
-        border-radius:10em
+        border-radius:1rem;
+        background-color:#034167;
+        color:white;
+        border:none;
     }
     .card--large .ingredientDivImg img{
         position:absolute;
         max-width:150px;
-        right:0;
+        right:-30px;
         bottom:-20px;
     }
     .card--large .ingredientDivImg span{
         font-size:1rem;
     }
     .ingredientCard span{
-        font-size:0.9em;
+        font-size:0.7em;
+        font-weight: bold;
     }
     .ingredientDivImg svg{
         position:absolute;
         width:175%;
         height:175%;
-        fill: red;
     }
 }
 </style>

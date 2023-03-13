@@ -31,7 +31,13 @@
                 <b v-else class="guessed-drink"> ? </b>
                 <span v-if="victory" class="guessed-drink">, good job !</span>
             </span>
-            <button @click="nextOrder()">Next</button>
+            <button class="pushable" @click="nextOrder()">
+                <span class="shadow"></span>
+                <span class="edge"></span>
+                <span class="front">
+                    Next
+                </span>
+            </button>
         </div>
     </div>
 </div>
@@ -99,11 +105,14 @@ export default {
             const missingCount = 16 - selected.length - missing.length;
             let newMissingIngredient = [];
             newMissingIngredient = missing || [];
-            for(let i = 0; i < missingCount; i++){
+            for (let i = 0; i < missingCount; i++) {
                 //const defaultIngredient = { strType: 'default', strIngredient: 'default' };
-                newMissingIngredient.push({ strType: 'default', strIngredient: 'default' })
+                newMissingIngredient.push({
+                    strType: 'default',
+                    strIngredient: 'default'
+                })
             }
-            
+
             this.defaultIngredients = newMissingIngredient
             console.log(this.defaultIngredients)
         }
@@ -117,28 +126,16 @@ export default {
     animation: fade-in 1.2s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
 }
 
-.resultDiv button {
-    background: white;
-    border-radius: 50px;
-    padding: 5px;
-    width: 150px;
-    border: none;
-}
-
 .victory--false {
-    border: 3px solid red;
+    border: 1px solid #AD2831;
+    ;
     transition: 0.2s;
 }
 
 .victory--true {
-    border: 3px solid rgb(0, 255, 0);
+    border: 1px solid #B2E364;
     transition: 0.2s;
 
-}
-
-.resultDiv span {
-    margin-top: 5px;
-    margin-bottom: 10px;
 }
 
 .resultDiv img {
@@ -171,24 +168,29 @@ export default {
 .coktailInfoDiv {
     width: 100%;
     height: 90%;
-    max-width:360px;
+    max-width: 360px;
     max-height: 360px;
-    margin:auto;
+    margin: auto;
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     grid-template-rows: repeat(5, 1fr);
-    justify-items: center; /* centrer horizontalement */
-    align-items: center; /* centrer verticalement */
-    grid-gap:0;
+    justify-items: center;
+    /* centrer horizontalement */
+    align-items: center;
+    /* centrer verticalement */
+    grid-gap: 0;
     overflow: hidden;
+    -webkit-animation: slide-in-bottom 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+    animation: slide-in-bottom 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
 }
 
 .top-div {
-    background-color: #13161E;
     border-color: 1px solid black;
     color: white;
     padding: 20px 10px;
-    overflow: hidden;
+    overflow: visible;
+    background-color: #0F0F0F;
+    color: white;
 }
 
 .infoDiv {
@@ -196,26 +198,70 @@ export default {
     justify-content: space-between;
     align-items: flex-start;
     margin-bottom: 10px;
+    -webkit-animation: slide-in-left 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+    animation: slide-in-left 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+}
+.resultDiv .pushable{
+    margin:10px 0;
 }
 
-@media (min-width: 1000px){
+@media (min-width: 1000px) {
     .top-div {
         display: flex;
         flex-direction: column;
+        position: relative;
+        background-color: transparent;
     }
-    .lottie-animation-container{
-        min-width:200px;
-        min-height:200px;
+
+    .lottie-animation-container {
+        min-width: 200px;
+        min-height: 200px;
     }
-    .resultDiv img{
-        width:180px;
-        height:180px;
+
+    .resultDiv img {
+        width: 180px;
+        height: 180px;
     }
-    .resultDiv span{
-        font-size:1.5rem;
-    }
-    .top-div span{
+
+    .resultDiv span {
         font-size: 1.5rem;
+    }
+
+    .top-div span {
+        font-size: 1.5rem;
+    }
+
+    .infoDiv {
+        background: #0F0F0F;
+        border: 1px solid #F88E81;
+        border-left: 0px;
+        padding: 1rem 1.5rem;
+        border-top-right-radius: 50px;
+        border-bottom-right-radius: 50px;
+        position: absolute;
+        width: 100%;
+        left: 0;
+        color: white;
+        box-shadow: 0 0 20px #7c6c56,
+            -5 -5 20px #d3b590;
+        -webkit-box-shadow: 0px 0px 34px 5px #000000;
+        box-shadow: 0px 0px 34px 5px #000000;
+
+    }
+
+    .coktailInfoDiv {
+        background: #0F0F0F;
+        border: 1px solid #F88E81;
+        border-radius: 3em;
+        padding: 1.5em;
+        min-width: 550px;
+        min-height: 550px;
+        color: white;
+        margin-top: 125px;
+        border-radius: 50px;
+        border-radius: 50px;
+        -webkit-box-shadow: 0px 0px 34px 19px #000000;
+        box-shadow: 0px 0px 34px 19px #000000;
     }
 }
 </style>

@@ -30,12 +30,13 @@ export default {
 .missingCard {
     width: 60px;
     height: 60px;
-    background-color: #202531;
+    background: #034167;
+    color:white;
     display: flex;
     justify-content: center;
     align-items: center;
     border-radius: 10px;
-    border:1px solid #2F323C;
+    border:0px solid #D95A4E;
     -webkit-animation: swing-in-top-fwd 0.5s cubic-bezier(0.175, 0.885, 0.320, 1.275) both;
     animation: swing-in-top-fwd 0.5s cubic-bezier(0.175, 0.885, 0.320, 1.275) both;
     padding:5px;
@@ -48,10 +49,8 @@ export default {
 
 }
 .missingCard span{
-    color: #4f5f80;
     font-weight:bold;
     font-size: 0.7rem;
-
 }
 .name{
     margin-top: 5px;

@@ -3,7 +3,6 @@
     <h1>
         Mixology Quest
     </h1>
-    <hr>
 </header>
 <CompositionSection
     @ingredient-removed="removeIngedient"
@@ -21,7 +20,8 @@
     :sortedIngredients="sortedIngredients"
     @ingredient-added="onIngredientAdded"
     :randomDrink="randomDrink"
-    :barManSentence="this.barmanPhrase"></IngredientsList>
+    :barManSentence="this.barmanPhrase"
+    :drinksHistory="this.drinksHistory"></IngredientsList>
 <div
     id="popUpAnimation"
     class="display-none">
@@ -29,12 +29,12 @@
         <g transform="matrix(0.38084,-0.381137,0.480943,0.481318,-68.3166,266.544)">
             <path
                 d="M201.792,91.939C201.792,66.862 176.08,46.502 144.411,46.502C112.742,46.502 87.031,66.862 87.031,91.939L87.031,388.01C87.031,413.087 112.742,433.447 144.411,433.447C176.08,433.447 201.792,413.087 201.792,388.01L201.792,91.939Z"
-                style="fill:rgb(0,218,20);" />
+                style="fill:#B2E364;" />
         </g>
         <g transform="matrix(-0.38084,-0.381137,-0.87866,0.879346,587.31,94.0201)">
             <path
                 d="M201.792,71.372C201.792,57.646 176.08,46.502 144.411,46.502C112.742,46.502 87.031,57.646 87.031,71.372L87.031,408.576C87.031,422.303 112.742,433.447 144.411,433.447C176.08,433.447 201.792,422.303 201.792,408.576L201.792,71.372Z"
-                style="fill:rgb(0,218,20);" />
+                style="fill:#B2E364;" />
         </g>
     </svg>
 </div>
@@ -73,6 +73,9 @@
 </template>
 
 <script>
+
+
+
 import CompositionSection from './components/CompositionSection';
 import IngredientsList from './components/IngredientsList';
 
@@ -116,6 +119,7 @@ export default {
             quizzIngredients: [], //tableau des ingrédients sélectionnées
             guessedDrink: '',
             possibleDrinks: [],
+            drinksHistory: [],
             isClose: false,
             victory: false,
             missingIngredients: '',
@@ -124,7 +128,7 @@ export default {
             scTimer: 0,
             scY: 0,
             fireworksJSON,
-            drinkJSON
+            drinkJSON,
         };
     },
     mounted() {
@@ -151,18 +155,18 @@ export default {
             if (this.randomDrink == this.guessedDrink) {
                 this.isClose = true;
                 this.guessedDrink = this.randomDrink
-
             }
             if (checkOrder(this.randomDrink, this.selectedIngredients) && this.victory == false) {
                 console.log("good job!")
+                this.drinksHistory.push(this.randomDrink)
                 this.score += this.selectedIngredients.length
                 this.guessedDrink = this.randomDrink
                 this.isClose = true;
                 this.victory = true;
                 this.updateBarmanPhrase(true);
                 this.victoryAnimation();
-                this.$refs.compositionSection.missingIngredientsWithDefaults(this.selectedIngredients, this.missingIngredients);
             }
+            this.$refs.compositionSection.missingIngredientsWithDefaults(this.selectedIngredients, this.missingIngredients);
 
         },
         updateQuizzIngredients() {
@@ -178,6 +182,7 @@ export default {
             for (let i = 0; i < this.quizzIngredients.length; i++) {
                 this.quizzIngredients[i].index = i;
             }
+            this.$refs.compositionSection.missingIngredientsWithDefaults(this.selectedIngredients, this.missingIngredients);
         },
         updateBarmanPhrase(good) {
             const barManSentence = document.getElementById('barManSentence');
@@ -231,8 +236,6 @@ export default {
                 this.addPossibledrink(possibleDrinks)
                 this.updateQuizzIngredients()
                 this.updateBarmanPhrase(true)
-                this.$refs.compositionSection.missingIngredientsWithDefaults(this.selectedIngredients, this.missingIngredients);
-
                 popUpDiv.classList.remove('display-none')
                 setTimeout(() => {
                     popUpDiv.classList.add('display-none');
@@ -243,8 +246,8 @@ export default {
                 console.log(this.quizzIngredients)
                 ingredient.good = 'false'
                 this.updateBarmanPhrase(false)
-                this.$refs.compositionSection.missingIngredientsWithDefaults(this.selectedIngredients, this.missingIngredients);
             }
+            this.$refs.compositionSection.missingIngredientsWithDefaults(this.selectedIngredients, this.missingIngredients);
 
         },
         removeIngedient(ingredient) {
@@ -266,7 +269,6 @@ export default {
             this.updateGuessedDrink(checkPossibleDrink(this.possibleDrinks, this.selectedIngredients))
             this.onOrderSubmited();
             this.$refs.compositionSection.missingIngredientsWithDefaults(this.selectedIngredients, this.missingIngredients);
-
         },
         addPossibledrink(possibleDrinks) {
             if (!this.isClose) {
@@ -333,6 +335,7 @@ const startingSentencesRandomIngredient = ["Now put some ", "Keep up we need ", 
 const badIngredientSentence = ["You want to make sock juice ?", "Focus !", "Wrong !", "Please, focus", "It's obvious !", "You look like an amateur", "Did you really think it was that?", "Are you trying to kill me ?!"]
 const startingSentencesLastIngredient = ["Finally, all we need is ", "And end with ", "Wow, now we just need ", "Finish with some ", "Impressive, we are just missing "]
 const endingSentence = ["Nice job boy.", "Nice.", "We're good.", "Not bad !", "Well done."]
+
 </script>
 
 <style>
@@ -355,12 +358,18 @@ const endingSentence = ["Nice job boy.", "Nice.", "We're good.", "Not bad !", "W
     grid-row-gap: 0;
     height: 100%;
     overflow: hidden;
-    background-color: #13161E;
+    background: #0F0F0F;
+    background-color: #e5e5f7;
+    background-color: #0F0F0F;
+    background-color: #0D0D0D;
+    background-color: #0D0D0D;
+opacity: 1;
+background-image: radial-gradient(#ffffff14 0.75px, #0D0D0D 0.75px);
+background-size: 15px 15px;
 }
-
 header {
     grid-area: top;
-    color:white;
+    color:#F1FF9F;
 }
 
 .top-div {
@@ -454,37 +463,24 @@ h1 {
     -webkit-animation: flicker-in-1 0.6s linear both;
     animation: flicker-in-1 0.6s linear both;
 }
-
+b{
+    color:#ED6D6D;
+}
 @media (min-width: 1000px) {
     #app {
         display: grid;
-        grid-template-rows: 120px 1fr;
+        grid-template-rows: 60px 1fr;
         grid-template-columns: 1fr 1fr;
         grid-template-areas:
             "top top"
             "middle bottom";   
     }
     header{
-        font-size:2em;
+        font-size:1em;
         position:relative;
         padding:0.5em;
-    }
-    header hr{
-        right:0;
-        left:0;
-        margin:0 auto;
-        width:40%;
-        height:0.1em;
-        position:absolute;
-        bottom:0;
-        z-index:1;
-        border:none;
-        background-color: white;
-        border-radius:5em;;
-    }
-    .coktailInfoDiv{
-        min-width: 500px;
-        min-height: 500px;
+        background:transparent;
+        color:#78CE8A;
     }
     
     .missingCard, .card--normal .ingredientDivImg, .card--normal {
