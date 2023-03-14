@@ -231,6 +231,7 @@ export default {
         onIngredientAdded(ingredient) {
 
             const popUpDiv = document.getElementById('popUpAnimation');
+            const cocktailDiv = document.getElementById('cocktailDiv');
 
             if (checkIngredient(this.randomDrink, ingredient)) {
                 ingredient.good = 'true'
@@ -245,8 +246,14 @@ export default {
                 }
                 this.madeMistake = false;
                 popUpDiv.classList.remove('display-none')
+                cocktailDiv.classList.remove('float')
+                cocktailDiv.classList.add('impact')
                 setTimeout(() => {
-                    popUpDiv.classList.add('display-none');
+                    cocktailDiv.classList.remove('impact')
+                    cocktailDiv.classList.add('float')
+                }, 301);
+                setTimeout(() => {
+                    popUpDiv.classList.add('display-none')
                 }, 1000);
             } else {
                 const index = this.quizzIngredients.findIndex(ingredientObj => ingredientObj.idIngredient === ingredient.idIngredient);

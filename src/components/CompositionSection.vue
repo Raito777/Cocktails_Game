@@ -7,7 +7,7 @@
             <span class="combo">Combo : <b>{{scoreCombo}}x</b></span>
         </div>
     </div>
-    <div class="coktailInfoDiv">
+    <div class="coktailInfoDiv float" id="cocktailDiv">
         <IngredientCard
             @click="removeIngredient(ingredient)"
             v-for="ingredient in selectedIngredients"
@@ -275,8 +275,16 @@ export default {
         margin-top: 175px;
         border-radius: 50px;
         border-radius: 50px;
+        transition:0.2s;
         -webkit-box-shadow: 0px 0px 34px 19px #000000;
         box-shadow: 0px 0px 34px 19px #000000;
+        
+    }
+    .float{
+        animation: float 6s ease-in-out infinite;
+    }
+    .impact{
+        animation: impact 0.3s cubic-bezier(.49,.49,.21,.92);
     }
 }
 </style>
