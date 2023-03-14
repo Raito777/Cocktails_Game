@@ -2,7 +2,10 @@
 <div class="top-div">
     <div class="infoDiv">
         <span>Order : <b>{{randomDrink.strDrink}}</b></span>
-        <span>Total score : <b>{{score}}</b></span>
+        <div class="scoreDiv">
+            <span>Total score : <b>{{score}}</b></span>
+            <span class="combo">Combo : <b>{{scoreCombo}}x</b></span>
+        </div>
     </div>
     <div class="coktailInfoDiv">
         <IngredientCard
@@ -88,6 +91,10 @@ export default {
         score: {
             required: true,
             default: 0
+        },
+        scoreCombo: {
+            required:true,
+            default: 1
         },
     },
     computed: {
@@ -196,7 +203,7 @@ export default {
 .infoDiv {
     display: flex;
     justify-content: space-between;
-    align-items: flex-start;
+    align-items: center;
     margin-bottom: 10px;
     -webkit-animation: slide-in-left 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
     animation: slide-in-left 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
@@ -204,7 +211,15 @@ export default {
 .resultDiv .pushable{
     margin:10px 0;
 }
-
+.scoreDiv{
+    display:flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-end;
+}
+.scoreDiv .combo{
+    font-size: 1em;
+}
 @media (min-width: 1000px) {
     .top-div {
         display: flex;
@@ -257,7 +272,7 @@ export default {
         min-width: 550px;
         min-height: 550px;
         color: white;
-        margin-top: 125px;
+        margin-top: 175px;
         border-radius: 50px;
         border-radius: 50px;
         -webkit-box-shadow: 0px 0px 34px 19px #000000;

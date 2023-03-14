@@ -249,7 +249,7 @@ hr {
     .orderBar .barOrder {
         padding: 10px;
         position: absolute;
-        top: 2em;
+        top: 0em;
         right: 13em;
     }
 
@@ -334,5 +334,24 @@ hr {
 
     }
 
+}
+
+@media (min-width: 1450px){
+    .speech-bubble {
+        width: 30em;
+        height: 9.2em;
+    }
+    .orderBar span{
+        font-size:2em;
+    }
+    .orderBar .sentence{
+        font-size:1.8em;
+
+    }
+    .speech-bubble:before {
+        right: 1.25em;
+        height: 1.5em;
+        transform: rotate(45deg) skewX(75deg);
+    }
 }
 </style>

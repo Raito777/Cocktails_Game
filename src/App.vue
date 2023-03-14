@@ -14,6 +14,7 @@
     :guessedDrink="guessedDrink"
     :selectedIngredients="selectedIngredients"
     :score="score"
+    :scoreCombo="scoreCombo"
     ref="compositionSection"></CompositionSection>
 <IngredientsList
     :ingredients="quizzIngredients"
@@ -74,8 +75,6 @@
 
 <script>
 
-
-
 import CompositionSection from './components/CompositionSection';
 import IngredientsList from './components/IngredientsList';
 
@@ -125,6 +124,8 @@ export default {
             missingIngredients: '',
             barmanPhrase: '',
             score: 0,
+            scoreCombo: 1,
+            madeMistake: false,
             scTimer: 0,
             scY: 0,
             fireworksJSON,
@@ -132,6 +133,7 @@ export default {
         };
     },
     mounted() {
+        this.getSessionData();
         randomCoktail.then(resultDrink => {
             this.randomDrink = resultDrink.drinks[0];
             console.log(this.randomDrink);
@@ -158,9 +160,9 @@ export default {
             }
             if (checkOrder(this.randomDrink, this.selectedIngredients) && this.victory == false) {
                 console.log("good job!")
-                this.drinksHistory.push(this.randomDrink)
-                this.score += this.selectedIngredients.length
-                this.guessedDrink = this.randomDrink
+                this.drinksHistory.push(this.randomDrink);
+                this.score += this.selectedIngredients.length * this.scoreCombo;
+                this.guessedDrink = this.randomDrink;
                 this.isClose = true;
                 this.victory = true;
                 this.updateBarmanPhrase(true);
@@ -217,11 +219,13 @@ export default {
                 this.missingIngredients = getMissingIngredients(this.randomDrink, this.selectedIngredients)
                 this.victory = false;
                 this.isClose = false;
+                this.madeMistake = false;
                 this.selectedIngredients = [];
                 this.guessedDrink = '';
                 this.updateQuizzIngredients();
                 this.updateBarmanPhrase(true)
                 this.$refs.compositionSection.missingIngredientsWithDefaults(this.selectedIngredients, this.missingIngredients);
+                this.saveData();
             });
         },
         onIngredientAdded(ingredient) {
@@ -236,6 +240,10 @@ export default {
                 this.addPossibledrink(possibleDrinks)
                 this.updateQuizzIngredients()
                 this.updateBarmanPhrase(true)
+                if(!this.madeMistake){
+                    this.scoreCombo++;
+                }
+                this.madeMistake = false;
                 popUpDiv.classList.remove('display-none')
                 setTimeout(() => {
                     popUpDiv.classList.add('display-none');
@@ -245,6 +253,8 @@ export default {
                 this.quizzIngredients[index].good = false
                 console.log(this.quizzIngredients)
                 ingredient.good = 'false'
+                this.scoreCombo = 1;
+                this.madeMistake = true;
                 this.updateBarmanPhrase(false)
             }
             this.$refs.compositionSection.missingIngredientsWithDefaults(this.selectedIngredients, this.missingIngredients);
@@ -311,6 +321,19 @@ export default {
             }, 2500);
 
         },
+        saveData(){
+            sessionStorage.setItem("score", this.score);
+            //sessionStorage.setItem("drinksHistory", this.drinksHistory);
+        },
+        getSessionData(){
+            if(sessionStorage.getItem("score")){
+                this.score = sessionStorage.getItem("score");
+            }
+            if(sessionStorage.getItem("drinksHistory")){
+                this.drinksHistory = sessionStorage.getItem("drinksHistory")
+            }
+
+        },
         handleScroll: function () {
             if (this.scTimer) return;
             this.scTimer = setTimeout(() => {
@@ -330,7 +353,7 @@ export default {
 const randomCoktail = getRandomCoktail();
 const ingredients = getIngredients();
 
-const startingSentencesFirstIngredient = ["First, ", "Begin with ", "First we need, ", "Start with "]
+const startingSentencesFirstIngredient = ["First, ", "Begin with ", "First we need ", "Start with "]
 const startingSentencesRandomIngredient = ["Now put some ", "Keep up we need ", "Don't forget ", "Focus and add ", "Now we need "]
 const badIngredientSentence = ["You want to make sock juice ?", "Focus !", "Wrong !", "Please, focus", "It's obvious !", "You look like an amateur", "Did you really think it was that?", "Are you trying to kill me ?!"]
 const startingSentencesLastIngredient = ["Finally, all we need is ", "And end with ", "Wow, now we just need ", "Finish with some ", "Impressive, we are just missing "]
@@ -358,14 +381,10 @@ const endingSentence = ["Nice job boy.", "Nice.", "We're good.", "Not bad !", "W
     grid-row-gap: 0;
     height: 100%;
     overflow: hidden;
-    background: #0F0F0F;
-    background-color: #e5e5f7;
-    background-color: #0F0F0F;
     background-color: #0D0D0D;
-    background-color: #0D0D0D;
-opacity: 1;
-background-image: radial-gradient(#ffffff14 0.75px, #0D0D0D 0.75px);
-background-size: 15px 15px;
+    opacity: 1;
+    background-image: radial-gradient(#ffffff31 0.75px, #0D0D0D 0.75px);
+    background-size: 15px 15px;
 }
 header {
     grid-area: top;
