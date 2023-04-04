@@ -108,7 +108,7 @@ export default {
             this.$emit('ingredient-removed', ingredient);
         },
         missingIngredientsWithDefaults(selected, missing) {
-            console.log("LES MISSINGS")
+            // console.log("LES MISSINGS")
             const missingCount = 16 - selected.length - missing.length;
             let newMissingIngredient = [];
             newMissingIngredient = missing || [];
@@ -121,7 +121,7 @@ export default {
             }
 
             this.defaultIngredients = newMissingIngredient
-            console.log(this.defaultIngredients)
+            // console.log(this.defaultIngredients)
         }
     },
 }

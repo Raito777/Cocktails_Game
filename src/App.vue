@@ -128,7 +128,7 @@ export default {
         this.getSessionData();
         randomCoktail.then(resultDrink => {
             this.randomDrink = resultDrink.drinks[0];
-            console.log(this.randomDrink);
+            // console.log(this.randomDrink);
             this.missingIngredients = getMissingIngredients(this.randomDrink, this.selectedIngredients)
             ingredients.then(resultIngredient => {
                 this.ingredients = resultIngredient;
@@ -151,7 +151,7 @@ export default {
                 this.guessedDrink = this.randomDrink
             }
             if (checkOrder(this.randomDrink, this.selectedIngredients) && this.victory == false) {
-                console.log("good job!")
+                // console.log("good job!")
                 this.drinksHistory.push(this.randomDrink);
                 this.score = +this.score + +this.selectedIngredients.length * +this.scoreCombo;
                 this.guessedDrink = this.randomDrink;
@@ -164,12 +164,12 @@ export default {
 
         },
         updateQuizzIngredients() {
-            console.log("Missing")
+            // console.log("Missing")
             this.quizzIngredients = get4RandomIngredientsFromType(this.ingredients, this.missingIngredients[0], this.selectedIngredients)
-            console.log(this.quizzIngredients)
-            console.log(this.missingIngredients[0])
+            // console.log(this.quizzIngredients)
+            // console.log(this.missingIngredients[0])
             if (!this.quizzIngredients.some(ing => ing.idIngredient === this.missingIngredients[0].idIngredient)) {
-                console.log("PUSHING TO THE LIMIT")
+                // console.log("PUSHING TO THE LIMIT")
                 const randomIndex = Math.floor(Math.random() * this.quizzIngredients.length);
                 this.quizzIngredients[randomIndex] = this.missingIngredients[0]
             }
@@ -203,11 +203,11 @@ export default {
             }, 700);
         },
         nextOrder() {
-            console.log("next-order")
+            // console.log("next-order")
             const randomCoktail = getRandomCoktail();
             randomCoktail.then(resultDrink => {
                 this.randomDrink = resultDrink.drinks[0];
-                console.log(this.randomDrink);
+                // console.log(this.randomDrink);
                 this.missingIngredients = getMissingIngredients(this.randomDrink, this.selectedIngredients)
                 this.victory = false;
                 this.isClose = false;
@@ -250,7 +250,7 @@ export default {
             } else {
                 const index = this.quizzIngredients.findIndex(ingredientObj => ingredientObj.idIngredient === ingredient.idIngredient);
                 this.quizzIngredients[index].good = false
-                console.log(this.quizzIngredients)
+                // console.log(this.quizzIngredients)
                 ingredient.good = 'false'
                 this.scoreCombo = 1;
                 this.madeMistake = true;
@@ -260,7 +260,7 @@ export default {
 
         },
         removeIngedient(ingredient) {
-            console.log("removing")
+            // console.log("removing")
             let index = 0;
             for (let j = 0; j < this.selectedIngredients.length; j++) {
                 const selIngredient = this.selectedIngredients[j].strIngredient;

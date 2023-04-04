@@ -154,8 +154,8 @@ function get4RandomIngredientsFromType(ingredients, theIngredient, selectedIngre
       randomIngredients.push(ingredient.ingredients[0]);
     }
   }
-  console.log("before pushing")
-  console.log(randomIngredients)
+  // console.log("before pushing")
+  // console.log(randomIngredients)
   return randomIngredients;
 }
 
