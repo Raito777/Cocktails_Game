@@ -153,7 +153,7 @@ export default {
             if (checkOrder(this.randomDrink, this.selectedIngredients) && this.victory == false) {
                 console.log("good job!")
                 this.drinksHistory.push(this.randomDrink);
-                this.score += this.selectedIngredients.length * this.scoreCombo;
+                this.score = +this.score + +this.selectedIngredients.length * +this.scoreCombo;
                 this.guessedDrink = this.randomDrink;
                 this.isClose = true;
                 this.victory = true;
