@@ -1,5 +1,10 @@
 <template>
 <div class="a-drink">
+    <div class="hover-info-div">
+        <span v-for="ingredient in drink"
+            :key="ingredient.idIngredient"></span>
+    </div>
+
     <img v-if="drink" v-bind:src="drink.strDrinkThumb">
 </div>
 </template>

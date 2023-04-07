@@ -23,6 +23,8 @@
     :randomDrink="randomDrink"
     :barManSentence="this.barmanPhrase"
     :drinksHistory="this.drinksHistory"></IngredientsList>
+
+    <!-- Pop ups -->
 <div
     id="popUpAnimation"
     class="display-none">
@@ -159,6 +161,7 @@ export default {
                 this.victory = true;
                 this.updateBarmanPhrase(true);
                 this.victoryAnimation();
+                console.log(this.drinksHistory);
             }
             this.$refs.compositionSection.missingIngredientsWithDefaults(this.selectedIngredients, this.missingIngredients);
 
