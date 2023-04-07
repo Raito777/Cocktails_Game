@@ -143,6 +143,7 @@ export default {
 
         window.addEventListener('scroll', this.handleScroll);
     },
+
     methods: {
         onOrderSubmited() {
 
@@ -154,6 +155,7 @@ export default {
             }
             if (checkOrder(this.randomDrink, this.selectedIngredients) && this.victory == false) {
                 // console.log("good job!")
+                this.randomDrink.ingredients = this.selectedIngredients;
                 this.drinksHistory.push(this.randomDrink);
                 this.score = +this.score + +this.selectedIngredients.length * +this.scoreCombo;
                 this.guessedDrink = this.randomDrink;

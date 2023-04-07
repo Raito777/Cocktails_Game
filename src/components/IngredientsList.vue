@@ -204,7 +204,6 @@ hr {
     display: flex;
     align-self: flex-end;
     align-items: center;
-
     padding: 0.6rem 0.8rem;
     margin:5px;
     margin-bottom:20px;

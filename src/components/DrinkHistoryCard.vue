@@ -1,12 +1,13 @@
 <template>
-<div class="a-drink">
-    <div class="hover-info-div">
-        <span v-for="ingredient in drink"
-            :key="ingredient.idIngredient"></span>
-    </div>
+<div class="a-drink" v-if="drink" v-tooltip="{ content: 'Informations sur le contenu' }">
+    <!-- <div class="hover-info-div" >
+        <span v-for="ingredient in drink.ingredients"
+            :key="ingredient.idIngredient"> {{ ingredient.strIngredient }}</span>
+</div> -->
+    <img v-bind:src="drink.strDrinkThumb">
 
-    <img v-if="drink" v-bind:src="drink.strDrinkThumb">
 </div>
+
 </template>
 
 <script>
@@ -17,7 +18,8 @@ export default {
     },
     props: {
         drink:{},
-    }
+    },
+    
 }
 </script>
 
@@ -30,12 +32,16 @@ export default {
     margin: 5px 10px;
 }
 
-.a-drink span {
-    font-size: 0.6em;
+* .hover-info-div{
+    display:flex;
+    flex-direction: column;
+    position: relative;
+    background-color: aquamarine;
+    top: 0;
+    transform: translateY(-100%);
 }
 
 .a-drink img {
-    position: relative;
     width: 80px;
     border-radius: 100%;
 }
