@@ -186,7 +186,7 @@ export default {
         updateBarmanPhrase(good) {
             const barManSentence = document.getElementById('barManSentence');
 
-            const randomIndex = Math.floor(Math.random() * this.quizzIngredients.length);
+            const randomIndex = Math.floor(Math.random() * 8);
             if (good) {
                 if (this.selectedIngredients.length == 0) {
                     this.barmanPhrase = startingSentencesFirstIngredient[randomIndex] + '<b>' + this.missingIngredients[0].strType.toLowerCase() + '</b>';
@@ -343,11 +343,11 @@ export default {
 const randomCoktail = getRandomCoktail();
 const ingredients = getIngredients();
 
-const startingSentencesFirstIngredient = ["First, ", "Begin with ", "First we need ", "Start with "]
-const startingSentencesRandomIngredient = ["Now put some ", "Keep up we need ", "Don't forget ", "Focus and add ", "Now we need "]
+const startingSentencesFirstIngredient = ["First, ", "Begin with ", "First we need ", "Start with ", "First of all, ", "Firstly put some ", "First and foremost ", "In the first place put some "]
+const startingSentencesRandomIngredient = ["Now put some ", "Keep up we need ", "Don't forget ", "Focus and add ", "Now we need ", "Let's put some ", "Then add ", "Next put some "]
 const badIngredientSentence = ["You want to make sock juice ?", "Focus !", "Wrong !", "Please, focus", "It's obvious !", "You look like an amateur", "Did you really think it was that?", "Are you trying to kill me ?!"]
-const startingSentencesLastIngredient = ["Finally, all we need is ", "And end with ", "Wow, now we just need ", "Finish with some ", "Impressive, we are just missing "]
-const endingSentence = ["Nice job boy.", "Nice.", "We're good.", "Not bad !", "Well done."]
+const startingSentencesLastIngredient = ["Finally, all we need is ", "And end with ", "Wow, now we just need ", "Finish with some ", "Impressive, we are just missing ", "Therefore add ", "In the end we need ", "At last put some "]
+const endingSentence = ["Nice job boy.", "Nice.", "We're good.", "Not bad !", "Well done.", "Yeah !", "Nice one !", "Let's taste that, boy."]
 
 </script>
 
