@@ -1,6 +1,8 @@
 <template>
+<!-- Simple card with the type of the missing ingredient -->
 <div class="missingCardDiv">
     <div class="missingCard">
+        <!-- If no type in the api, default is Misc. -->
         <span v-if="type != 'default'">{{type ? type : 'Misc.'}}</span>
     </div>
 </div>

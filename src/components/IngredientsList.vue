@@ -1,26 +1,35 @@
 <template>
 <div class="ingredientsList">
+
+    <!--Order section with the barman, his phrase and the historic-->
     <div class="orderBar">
         <div class="barOrder speech-bubble">
             <span>Boy, a <b>{{randomDrink.strDrink}} !</b></span>
             <span class="sentence" id="barManSentence"></span>
-
             <!-- <input type="text" v-model="search" placeholder="Search for ingredients or types"> -->
         </div>
+        
+        <!--Barman image-->
         <img class="barman" src="../assets/crew0.png">
+        
         <div class="historic-section">
             <span>Drinks served</span>
+
             <div class="historic-div">
                 <div class="historic-content">
+                    <!-- Completed orders -->
                     <DrinkHistoryCard
                         v-for="drink in drinksHistory"
                         :key=" drink.idIngredient"
                         :drink="drink"></DrinkHistoryCard>
                 </div>
             </div>
+
         </div>
     </div>
+
     <div class="ingredientsDiv">
+        <!-- Quizz ingredients -->
         <IngredientCard
             size="large"
             @click="addIngredient(ingredient)"
@@ -71,6 +80,8 @@ export default {
 
     },
     computed: {
+        //old function to search among ingredients
+
         // filteredIngredients() {
         //     let defaultMisc = "misc."
         //     return this.ingredients.filter((ingredient) => {
@@ -87,6 +98,7 @@ export default {
         // }
     },
     methods: {
+        //when an ingredient is clicked
         addIngredient(ingredient) {
             this.$emit('ingredient-added', ingredient);
         }

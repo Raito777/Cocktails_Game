@@ -1,9 +1,13 @@
 <template>
+
+<!-- Simple card with the image of the order -->
 <div class="a-drink" v-if="drink" v-tooltip="{ content: 'Informations sur le contenu' }">
-    <!-- <div class="hover-info-div" >
+    <!-- 
+        <div class="hover-info-div" >
         <span v-for="ingredient in drink.ingredients"
             :key="ingredient.idIngredient"> {{ ingredient.strIngredient }}</span>
-</div> -->
+        </div>
+    -->
     <img v-bind:src="drink.strDrinkThumb">
 
 </div>

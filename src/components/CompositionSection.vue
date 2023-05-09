@@ -1,5 +1,7 @@
 <template>
 <div class="top-div">
+
+    <!-- Score section -->
     <div class="infoDiv">
         <span>Order : <b>{{randomDrink.strDrink}}</b></span>
         <div class="scoreDiv">
@@ -7,23 +9,31 @@
             <span class="combo">Combo : <b>{{scoreCombo}}x</b></span>
         </div>
     </div>
+    
+    <!--Main component containing the card for ingredient and missingIngredient-->
     <div class="coktailInfoDiv float" id="cocktailDiv">
+        <!--The selected ingredients cards-->
         <IngredientCard
             @click="removeIngredient(ingredient)"
             v-for="ingredient in selectedIngredients"
             :key="ingredient.idIngredient"
             :name="ingredient.strIngredient"
             :good="ingredient.good"></IngredientCard>
+
+        <!-- The missing ingredients cards with their types-->
         <MissingIngredientCard
             v-for="missingIngredient in defaultIngredients"
             :key="missingIngredient.idIngredient"
             :type="missingIngredient.strType"
             :name="missingIngredient.strIngredient">
         </MissingIngredientCard>
+        
+        <!--The center div with a possible drink-->
         <div class="resultDiv">
             <!-- <span>Missing ingredients : <b>{{missingIngredients.length}}</b></span> -->
             <img v-if="guessedDrink" v-bind:src="guessedDrink.strDrinkThumb" v-bind:alt="guessedDrink.strDrink" :class="[`victory--${victory}`]">
             <!-- <img v-else src="../assets/guess.png" alt="Question mark"> -->
+            <!--Waiting animation-->
             <Vue3Lottie
                 v-else
                 :animationData="drinkJSON"
@@ -34,6 +44,7 @@
                 <b v-else class="guessed-drink"> ? </b>
                 <span v-if="victory" class="guessed-drink">, good job !</span>
             </span>
+            <!--Next order button-->
             <button class="pushable" @click="nextOrder()">
                 <span class="shadow"></span>
                 <span class="edge"></span>
@@ -42,7 +53,9 @@
                 </span>
             </button>
         </div>
+
     </div>
+    
 </div>
 </template>
 
