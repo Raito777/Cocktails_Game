@@ -1,9 +1,16 @@
 <template>
+
+<!--Basic header for now -->
 <header class="header">
     <h1>
         Mixology Quest
     </h1>
 </header>
+
+<!-- 
+    Left side (or top side on phone) 
+    This componenent contains de section of the selected ingredient.
+-->
 <CompositionSection
     @ingredient-removed="removeIngedient"
     @next-order="nextOrder"
@@ -16,6 +23,11 @@
     :score="score"
     :scoreCombo="scoreCombo"
     ref="compositionSection"></CompositionSection>
+
+<!--
+    Right side (or bottom side one phone)
+    This componenent contain the order and the "quizz" to guess the ingredients    
+-->    
 <IngredientsList
     :ingredients="quizzIngredients"
     :sortedIngredients="sortedIngredients"
@@ -24,7 +36,9 @@
     :barManSentence="this.barmanPhrase"
     :drinksHistory="this.drinksHistory"></IngredientsList>
 
-    <!-- Pop ups -->
+<!-- Pop ups -->
+
+<!-- Little pop up animation for a good answer (green checkmark) -->
 <div
     id="popUpAnimation"
     class="display-none">
@@ -41,6 +55,8 @@
         </g>
     </svg>
 </div>
+
+<!-- Pop up animation for when a cocktail is entirely guessed -->
 <div
     id="popWinAnimation"
     class="display-none">
@@ -76,23 +92,23 @@ import fireworksJSON from './assets/98352-fireworks-shine.json'
 import drinkJSON from './assets/947-drink.json'
 
 import {
-    getRandomCoktail,
-    getDrinkFromIngredients,
-    getIngredients,
-    getDrinkById
+    getRandomCoktail, //get a random Cocktail form the api
+    getDrinkFromIngredients, //get a list of drinks form the api, made of an ingredient
+    getIngredients, //get ingredients of a cocktail
+    getDrinkById //get a drink with it's id
 } from './services/api/coktailsAPI'
 
 import {
-    checkOrder,
-    checkPossibleDrink,
-    getMissingIngredients,
-    checkIngredient,
-    sortIngredientsByType,
+    checkOrder, //check if the order have been completed
+    checkPossibleDrink, //get a drink wich can be made with the selected ingredients
+    getMissingIngredients, //get all the missing ingredient of the cocktail order's
+    checkIngredient, //check if the ingredient is in the cocktail
+    sortIngredientsByType, //sort the ingredients by their type
     get4RandomIngredientsFromType
 } from './services/api/game'
 
 import {
-    Vue3Lottie
+    Vue3Lottie //Vu3Lottie is for the svg animations (win pop-up and the waiting cocktail)
 } from 'vue3-lottie'
 import 'vue3-lottie/dist/style.css'
 
@@ -105,32 +121,34 @@ export default {
     },
     data() {
         return {
-            randomDrink: '',
-            ingredients: [], //tableau des tous les ingrédients
-            sortedIngredients: [],
-            selectedIngredients: [],
-            quizzIngredients: [], //tableau des 4 ingredients 
-            guessedDrink: '',
-            possibleDrinks: [],
-            drinksHistory: [],
-            isClose: false,
-            victory: false,
-            missingIngredients: '',
-            barmanPhrase: '',
-            score: 0,
-            scoreCombo: 1,
-            madeMistake: false,
-            scTimer: 0,
+            randomDrink: '', //the drink to guessed
+            ingredients: [], //all of the ingredients
+            sortedIngredients: [], //sorted ingredients
+            selectedIngredients: [], //selected ingredients by the user
+            quizzIngredients: [], //the 4 ingredients of the quizz
+            guessedDrink: '', //drink wich can be made with the selected ingredients
+            possibleDrinks: [], //list of drinks wich can be made with one ingredient
+            drinksHistory: [], //list of the cocktails that have been guessed
+            isClose: false, //if the drink wich can be made with the selected ingredients is the drink to guessed
+            victory: false, //if the cocktail have been guessed
+            missingIngredients: '', //list of the missing ingredients (ingredients to guess)
+            barmanPhrase: '', //phrase of the barman
+            score: 0, //total score, is 0 if no score have been stored
+            scoreCombo: 1, //combo of the player, increase when no error have been made in row
+            madeMistake: false, //if the player made a mistake during the round
+            scTimer: 0, //for the animation of the pop-up
             scY: 0,
-            fireworksJSON,
-            drinkJSON,
+            fireworksJSON, //guessed svg animation
+            drinkJSON, //waiting svg animation
         };
     },
     mounted() {
+        //first we get the session data (if there is any)
         this.getSessionData();
+        //the first request is to get a random drink
         randomCoktail.then(resultDrink => {
+            //we init all of the game variables
             this.randomDrink = resultDrink.drinks[0];
-            // console.log(this.randomDrink);
             this.missingIngredients = getMissingIngredients(this.randomDrink, this.selectedIngredients)
             ingredients.then(resultIngredient => {
                 this.ingredients = resultIngredient;
@@ -140,21 +158,20 @@ export default {
                 this.$refs.compositionSection.missingIngredientsWithDefaults(this.selectedIngredients, this.missingIngredients);
             });
         });
-
-        window.addEventListener('scroll', this.handleScroll);
     },
 
     methods: {
+        //this function is called every time we select an ingredient
         onOrderSubmited() {
-
+            //we update the list of the missing ingredients
             this.missingIngredients = getMissingIngredients(this.randomDrink, this.selectedIngredients)
 
             if (this.randomDrink == this.guessedDrink) {
                 this.isClose = true;
-                this.guessedDrink = this.randomDrink
             }
+            //if the order has been completed
             if (checkOrder(this.randomDrink, this.selectedIngredients) && this.victory == false) {
-                // console.log("good job!")
+                //we reset all the variables
                 this.randomDrink.ingredients = this.selectedIngredients;
                 this.drinksHistory.push(this.randomDrink);
                 this.score = +this.score + +this.selectedIngredients.length * +this.scoreCombo;
@@ -165,24 +182,25 @@ export default {
                 this.victoryAnimation();
                 console.log(this.drinksHistory);
             }
+            //we update the child component with the missing ingredients
             this.$refs.compositionSection.missingIngredientsWithDefaults(this.selectedIngredients, this.missingIngredients);
-
         },
+        //update the 4 ingredients proposed to the player
         updateQuizzIngredients() {
-            // console.log("Missing")
+            //we get the list of 4 from the type of the ingredient to guessed
             this.quizzIngredients = get4RandomIngredientsFromType(this.ingredients, this.missingIngredients[0], this.selectedIngredients)
-            // console.log(this.quizzIngredients)
-            // console.log(this.missingIngredients[0])
+            //we positionate the good ingredient to guess
             if (!this.quizzIngredients.some(ing => ing.idIngredient === this.missingIngredients[0].idIngredient)) {
-                // console.log("PUSHING TO THE LIMIT")
                 const randomIndex = Math.floor(Math.random() * this.quizzIngredients.length);
                 this.quizzIngredients[randomIndex] = this.missingIngredients[0]
             }
             for (let i = 0; i < this.quizzIngredients.length; i++) {
                 this.quizzIngredients[i].index = i;
             }
+            //we update the child component with the missing ingredients
             this.$refs.compositionSection.missingIngredientsWithDefaults(this.selectedIngredients, this.missingIngredients);
         },
+        //update the barman phrase, good is for the mood of the barman : true, good ingredient, false, made a mistake
         updateBarmanPhrase(good) {
             const barManSentence = document.getElementById('barManSentence');
 
@@ -202,17 +220,18 @@ export default {
             }
             barManSentence.innerHTML = this.barmanPhrase;
 
+            //typing animation for the phrase
             barManSentence.classList.add('animateSentence');
             setTimeout(() => {
                 barManSentence.classList.remove('animateSentence');
             }, 700);
         },
+        //change the cocktail to guess
         nextOrder() {
-            // console.log("next-order")
+            //reseting every variables
             const randomCoktail = getRandomCoktail();
             randomCoktail.then(resultDrink => {
                 this.randomDrink = resultDrink.drinks[0];
-                // console.log(this.randomDrink);
                 this.missingIngredients = getMissingIngredients(this.randomDrink, this.selectedIngredients)
                 this.victory = false;
                 this.isClose = false;
@@ -225,11 +244,13 @@ export default {
                 this.saveData();
             });
         },
+        //add an ingredient to the selected ingredients
         onIngredientAdded(ingredient) {
 
             const popUpDiv = document.getElementById('popUpAnimation');
             const cocktailDiv = document.getElementById('cocktailDiv');
 
+            //if the ingredient is a good one, push it and update variables
             if (checkIngredient(this.randomDrink, ingredient)) {
                 ingredient.good = 'true'
                 this.selectedIngredients.push(ingredient)
@@ -245,6 +266,8 @@ export default {
                 popUpDiv.classList.remove('display-none')
                 cocktailDiv.classList.remove('float')
                 cocktailDiv.classList.add('impact')
+
+                //checkmark animation
                 setTimeout(() => {
                     cocktailDiv.classList.remove('impact')
                     cocktailDiv.classList.add('float')
@@ -252,6 +275,7 @@ export default {
                 setTimeout(() => {
                     popUpDiv.classList.add('display-none')
                 }, 1000);
+
             } else {
                 const index = this.quizzIngredients.findIndex(ingredientObj => ingredientObj.idIngredient === ingredient.idIngredient);
                 this.quizzIngredients[index].good = false
@@ -264,8 +288,8 @@ export default {
             this.$refs.compositionSection.missingIngredientsWithDefaults(this.selectedIngredients, this.missingIngredients);
 
         },
+        //remove an ingredient from the selected ingredients
         removeIngedient(ingredient) {
-            // console.log("removing")
             let index = 0;
             for (let j = 0; j < this.selectedIngredients.length; j++) {
                 const selIngredient = this.selectedIngredients[j].strIngredient;
@@ -284,16 +308,16 @@ export default {
             this.onOrderSubmited();
             this.$refs.compositionSection.missingIngredientsWithDefaults(this.selectedIngredients, this.missingIngredients);
         },
+        //list of list of the possible drink with an ingredient
         addPossibledrink(possibleDrinks) {
             if (!this.isClose) {
                 possibleDrinks.then(resultPossibleDrinks => {
                     this.possibleDrinks.push(resultPossibleDrinks);
-                    //console.log(this.possibleDrinks);
-                    //console.log(checkPossibleDrink(this.possibleDrinks, this.selectedIngredients))
                     this.updateGuessedDrink(checkPossibleDrink(this.possibleDrinks, this.selectedIngredients))
                 });
             }
         },
+        //update drink wich can be made with the selected ingredients
         updateGuessedDrink(idDrink) {
             if (!this.isClose) {
                 if (idDrink != 0) {
@@ -306,6 +330,7 @@ export default {
                 }
             }
         },
+        //victory animation (when an order has been completed)
         victoryAnimation() {
             const victoryPopUp = document.getElementById('popWinAnimation');
             const imgVictory = document.getElementById('imgWin');
@@ -323,26 +348,24 @@ export default {
 
                 this.nextOrder();
             }, 2500);
-
         },
+        //save the score data in the local storage
         saveData(){
             sessionStorage.setItem("score", this.score);
-            //sessionStorage.setItem("drinksHistory", this.drinksHistory);
         },
+        //get the score data from the local storage if it exist
         getSessionData(){
             if(sessionStorage.getItem("score")){
                 this.score = sessionStorage.getItem("score");
             }
-            if(sessionStorage.getItem("drinksHistory")){
-                this.drinksHistory = sessionStorage.getItem("drinksHistory")
-            }
-
         },
     }
 }
+//firsts async call of the api
 const randomCoktail = getRandomCoktail();
 const ingredients = getIngredients();
 
+//different possible sentence for the barman
 const startingSentencesFirstIngredient = ["First, ", "Begin with ", "First we need ", "Start with ", "First of all, ", "Firstly put some ", "First and foremost ", "In the first place put some "]
 const startingSentencesRandomIngredient = ["Now put some ", "Keep up we need ", "Don't forget ", "Focus and add ", "Now we need ", "Let's put some ", "Then add ", "Next put some "]
 const badIngredientSentence = ["You want to make sock juice ?", "Focus !", "Wrong !", "Please, focus", "It's obvious !", "You look like an amateur", "Did you really think it was that?", "Are you trying to kill me ?!"]
@@ -352,6 +375,9 @@ const endingSentence = ["Nice job boy.", "Nice.", "We're good.", "Not bad !", "W
 </script>
 
 <style>
+
+/* Mobile first styling */
+
 #app {
     font-family: Avenir, Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
@@ -475,6 +501,8 @@ h1 {
 b{
     color:#ED6D6D;
 }
+
+/*For large screens*/
 @media (min-width: 1000px) {
     #app {
         display: grid;
